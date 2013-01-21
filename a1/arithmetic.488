@@ -1,0 +1,32 @@
+% toy programs for assignment 1 of csc488
+% contains functions / procedures that use all arithmetic, logical, and comparison operators of the 488 source language
+begin
+
+  % return the sum from 1 to x
+  'integer' sum_to '(' 'integer' x ')'
+  begin
+    'integer' sum, i
+    sum ':' '=' 0
+    i   ':' '=' 1
+
+    'loop'
+    'exit' 1 'when' i '>' x 
+        sum ':' '=' sum '+' i
+        i   ':' '=' i   '+' 1
+    'pool'
+
+    'result' sum
+  end
+
+  % execute all the functions and procedures
+  'proc' main '(' ')'
+  begin
+    'integer' x
+    x ':' '=' 10
+
+    'put' "sum from 1 to 10 is " sum_to '(' x ')'
+
+  end
+
+  main ()
+end

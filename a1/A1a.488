@@ -11,8 +11,8 @@ begin
 
     'loop'
     'exit' 1 'when' i '>' x 
-        sum ':' '=' sum '+' i
-        i   ':' '=' i   '+' 1
+      sum ':' '=' sum '+' i
+      i   ':' '=' i   '+' 1
     'pool'
 
     'result' sum

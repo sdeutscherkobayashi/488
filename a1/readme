@@ -1,0 +1,18 @@
+README
+
+Steven Deutscher-Kobayashi
+g0kobe
+994370532
+
+Since I worked alone, I did everything.
+
+Each of the five files contains some toy programs of a certain type, 
+
+A1a - arithmetic and comparison operations
+A1b - array operations
+A1c - iteration
+A1d - non recursive functions and procedures
+A1e - recursive functions and procedures
+
+There is some overlap in the files. For example the arithmetic operations in A1a are contains in functions and
+seen again in A1d. For more details see comments in individual files. 

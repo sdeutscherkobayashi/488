@@ -1,4 +1,4 @@
-package compiler488 ;
+package compiler488.compiler ;
 
 /* $Id: Compiler488.java 2 2010-01-07 16:12:46Z dw $
  /**

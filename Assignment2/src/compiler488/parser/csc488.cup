@@ -74,6 +74,7 @@ parser code {:
  * token, add it here.
  */
 init with {:
+	System.out.println("this is some init code\n");
 :};
 
 /* User code components 4: scanner specification code.
@@ -115,7 +116,11 @@ terminal String  TEXTCONST	;
 // Non-terminals that have no value.
 // nonterminal xxx
 
-nonterminal	program ;
+nonterminal	program, statement, scope, declaration, functionHead,
+            procedureHead, variablenames, bound, type, output,
+            input, arguementList, arguements, parameterList,
+            parameters, variable, expression, variablename,
+            arrayname, functionname, procedurename, parametername;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -147,3 +152,4 @@ program		::=	;				// the main program
     GOES HERE
 
 ****************************************************************************/
+program ::= scope ; 

@@ -1,0 +1,51 @@
+begin
+
+a()
+
+b(1, true)
+
+put e()
+
+f(2, true)
+
+end
+
+
+
+forward proc a ()
+begin
+	put "Procedure a"
+	return
+end
+
+forward proc b (integer c, boolean d)
+begin   
+        put "Procedure b", c
+	if d then
+		put  "true"
+	else
+		put "false"
+	fi
+	return
+end
+
+forward integer e()
+begin
+	put "Procedure e"
+	result 1
+end
+
+forward integer e()
+begin   
+        put "Procedure e"
+        result 1
+end
+
+integer f(integer g, boolean h)
+begin
+	if h then
+		result g + 1
+	else
+		result g
+	fi
+end

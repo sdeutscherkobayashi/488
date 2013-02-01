@@ -1,0 +1,25 @@
+begin
+
+integer a[8]
+a[1] = 1
+a[8] = 2
+
+boolean b[16]
+b[1] = true
+b[16] = false
+
+integer positivebound[8..16]
+positivebound[8] = 3
+positivebound[16] = 4
+
+integer negativebound[-1..-32]
+positivebound[-1] = 5
+positivebound[-32] = 6
+
+integer zerocrossing[-64..64]
+positivebound[-64] = 7
+positivebound[64] = 8
+
+end
+
+

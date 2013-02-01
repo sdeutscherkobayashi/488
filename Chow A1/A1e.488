@@ -1,0 +1,39 @@
+begin
+
+a(10)
+
+put "Factorial of 10 is ", factorial(10)
+
+
+end
+
+
+
+proc a(integer b)
+begin
+	put "Procedure a", b
+	if b < 0 then
+		c(b)
+		return
+	else
+		a(b - 1)
+        fi
+end
+
+proc c(integer d)
+begin
+	put "Procedure c", d
+	if d < 0 then
+		return
+	else
+		c(d - 2)
+	fi
+end
+
+integer factorial(integer n)
+begin
+	if n < 3 then
+		result n
+	else
+		result factorial(n - 1)
+end

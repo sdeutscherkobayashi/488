@@ -1,0 +1,38 @@
+begin
+
+integer i
+
+i = 1
+loop
+	put "loop", i
+	exit
+pool
+
+i = 2
+loop
+	put "loop", i
+	i = i + 1
+	exit when i > 10
+pool
+
+loop
+	loop
+		loop
+			put "loop", i
+			exit 3
+		pool
+	pool
+pool
+
+i = 11
+loop
+        loop
+                loop
+                        put "loop", i
+			i = i + 1
+                        exit 3 when i > 20
+                pool
+        pool
+pool
+
+end

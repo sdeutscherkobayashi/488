@@ -195,10 +195,38 @@ output          ::= TEXTCONST | SKIP ;
 input		       	::= variable |
                     variable COMMA input ;
 
-argumentList	  ::= arguments | ;
-arguments   		::= expression |
-					          expression COMMA arguments;
-
-variablename    ::= IDENT ;
-functionname    ::= IDENT ;
-procedurename   ::= IDENT ;
+argumentList	::= arguments | //EMPTY
+					;
+arguments		::= expression |
+					expression COMMA arguments;
+parameters		::= type parametername |
+					parameters COMMA parameters;
+parameterList	::= parameters | //EMPTY
+					;
+variable		::= variablename |
+					arrayname L_SQUARE expression R_SQUARE;
+expression		::= INTEGER |
+					MINUS expression |
+//					expression PLUS expression |
+//					expression MINUS expression |
+//					expression TIMES expression |
+//					expression DIVIDE expression |
+					TRUE |
+					FALSE |
+					NOT expression |
+//					expression AND expression |
+//					expression OR expression |
+//					expression EQUAL expression |
+//					expression NOT EQUAL expression |
+//					expression LESS expression |
+//					expression LESS EQUAL expression |
+//					expression GREATER expression |
+//					expression GREATER EQUAL expression |
+//					L_PAREN expression R_PAREN |
+//					variable |
+//					functionname L_PAREN argumentList R_PAREN |
+					parametername;
+variablename	::= IDENT ;
+functionname	::= IDENT ;
+procedurename	::= IDENT ;
+parametername	::= IDENT ;

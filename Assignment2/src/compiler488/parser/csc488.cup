@@ -178,3 +178,9 @@ output          ::= TEXTCONST | SKIP ;
 variablename    ::= IDENT ;
 functionname    ::= IDENT ;
 procedurename   ::= IDENT ;
+input			::= variable |
+					input COMMA input;
+argumentList	::= arguments |
+					//EMPTY;
+arguments		::= expression |
+					arguments COMMA arguments;

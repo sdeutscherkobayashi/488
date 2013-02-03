@@ -13,13 +13,13 @@ import java_cup.runtime.*;		// Must always import this.
 // your code goes HERE
 //:};
 
-/* User code components 2: parser code components. 
+/* User code components 2: parser code components.
  * Modifications to the default generated parser
  */
 parser code {:
 
 	String lastError;
-	
+
     /** Override the report_error method so it will display the line and
      * column of where the error occurred in the input as well as the
      * reason for the error which is passed into the method in the
@@ -30,7 +30,7 @@ parser code {:
     public void report_error(String message, Object info)
 	{
 	String st =  "Error";
-   
+
         if (info instanceof java_cup.runtime.Symbol)
 	    {
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
@@ -40,7 +40,7 @@ parser code {:
              * If either is < 0 the parser may have run off the end of the program
              * and a Syntax Error message without line number may be printed.
 	     */
-   
+
             if (s.left >= 0)				// Check line number.
 		{
                 st += " in line " + (s.left + 1);
@@ -54,7 +54,7 @@ parser code {:
         System.err.println (st);
         lastError = st;
 	}
-   
+
     /** Override the report_fatal_error method to use the report_error method. */
     /** @throws SyntaxErrorException						*/
     public void report_fatal_error (String message, Object info) throws SyntaxErrorException
@@ -62,7 +62,7 @@ parser code {:
         report_error (message, info);
 /*        throw new SyntaxErrorException (lastError); */
 	}
-   
+
    /** version string for printing version in Main */
    public static final String version =
      " $Revision: 1.10 $ $Date: 2013/01/04 16:42:14 $Author: dw $" ;
@@ -94,9 +94,9 @@ init with {:
  * "left", "right", "nonassoc", "import", and "package".
  */
 
-// DEFINITIONS for CSC488S Source Language  Winter  2012/2013 
+// DEFINITIONS for CSC488S Source Language  Winter  2012/2013
 
-// Terminals returned by the scanner with no value attached.  
+// Terminals returned by the scanner with no value attached.
 terminal 	BOOLEAN,	INTEGER,	BEGIN		;
 terminal	ELSE,	END,	EXIT,   FI,	FORWARD	;
 terminal	IF,	GET, 	LOOP,	POOL,	PROCEDURE,	PUT	;
@@ -116,11 +116,12 @@ terminal String  TEXTCONST	;
 // Non-terminals that have no value.
 // nonterminal xxx
 
-nonterminal	program, statement, scope, declaration, functionHead,
-            procedureHead, variablenames, bound, type, output,
-            input, arguementList, arguements, parameterList,
-            parameters, variable, expression, variablename,
-            arrayname, functionname, procedurename, parametername;
+nonterminal	program, statementList, statement, scope, declarationList,
+            declaration, functionHead, procedureHead, variablenames,
+            bound, type, output, input, arguementList, arguements,
+            parameterList, parameters, variable, expression,
+            variablename, arrayname, functionname, procedurename,
+            parametername;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -152,4 +153,28 @@ program		::=	;				// the main program
     GOES HERE
 
 ****************************************************************************/
-program ::= scope ; 
+program         ::= scope ;
+statementList   ::= statementList statement |
+                    statement;
+statement       ::= LOOP statementList POOL |
+                    EXIT | EXIT INTCONST |
+                    PUT output | GET input ;
+scope           ::= BEGIN declarationList statementList END |
+                    BEGIN statementList END ;
+declarationList ::= declarationList declaration |
+                    declaration ;
+declaration     ::= type variablenames |
+                    functionHead scope |
+                    procedureHead scope |
+                    FORWARD functionHead |
+                    FORWARD procedureHead ;
+functionHead    ::= type functionname L_PAREN R_PAREN ;
+procedureHead   ::= PROCEDURE procedurename L_PAREN R_PAREN ;
+variablenames   ::= variablename |
+                    variablename COMMA variablenames ;
+bound           ::= INTCONST MINUS INTCONST ;
+type            ::= INTEGER | BOOLEAN ;
+output          ::= TEXTCONST | SKIP ;
+variablename    ::= IDENT ;
+functionname    ::= IDENT ;
+procedurename   ::= IDENT ;

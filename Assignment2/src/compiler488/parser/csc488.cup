@@ -157,7 +157,7 @@ program         ::= scope ;
 statementList   ::= statementList statement |
                     statement;
 statement       ::= variable COLON EQUAL expressions |
-					IF expression THEN statement FI |
+					          IF expression THEN statement FI |
                     IF expression THEN statement ELSE statement FI |
                     LOOP statementList POOL |
                     EXIT | EXIT INTCONST |
@@ -179,8 +179,8 @@ declaration     ::= type variablenames |
                     FORWARD functionHead |
                     FORWARD procedureHead ;
 
-functionHead    ::= type functionname L_PAREN R_PAREN ;
-procedureHead   ::= PROCEDURE procedurename L_PAREN R_PAREN ;
+functionHead    ::= type functionname L_PAREN parameterList R_PAREN ;
+procedureHead   ::= PROCEDURE procedurename L_PAREN parameterList R_PAREN ;
 
 variablenames   ::= variablename |
                     variablename L_SQUARE INTCONST R_SQUARE |
@@ -203,19 +203,17 @@ arguments	     	::= expression |
 					          expression COMMA arguments ;
 
 parameters		  ::= type parametername |
-					          parameters COMMA parameters ;
+					          type parametername COMMA parameters ;
 parameterList	  ::= parameters | //EMPTY
 					          ;
 
 variable     		::= variablename |
 					          arrayname L_SQUARE expression R_SQUARE ;
 
-expression			::= INTEGER |
-						MINUS expression |
-						TRUE |
-						FALSE |
-						NOT expression |
-						parametername ;
+expression			::= INTCONST |
+						        TRUE |
+                    FALSE |
+                    parametername ;
 expressions			::=	expression PLUS expressions |
 					          expression MINUS expressions |
 					          expression TIMES expressions |
@@ -228,11 +226,13 @@ expressions			::=	expression PLUS expressions |
 					          expression LESS EQUAL expressions |
 					          expression GREATER expressions |
 					          expression GREATER EQUAL expressions |
-					          L_PAREN expression R_PAREN |
+					          L_PAREN expressions R_PAREN |
+						        MINUS expressions |
+                    NOT expressions |
 					          variable |
 					          functionname L_PAREN argumentList R_PAREN ;
-arrayname     ::= IDENT ;
-variablename	::= IDENT ;
-functionname	::= IDENT ;
-procedurename	::= IDENT ;
-parametername	::= IDENT ;
+arrayname       ::= IDENT ;
+variablename  	::= IDENT ;
+functionname  	::= IDENT ;
+procedurename  	::= IDENT ;
+parametername	  ::= IDENT ;

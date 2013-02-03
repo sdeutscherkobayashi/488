@@ -3,52 +3,52 @@
 begin
 
   % sum the numbers from 1 to 5
-  'integer' dumb_sum '(' ')'
+  integer dumb_sum ( )
   begin
-    'integer' int_list '[' 5 ']'
-    'integer' sum, i
-    sum ':' '=' 0
-    i   ':' '=' 1
+    integer int_list [ 5 ]
+    integer sum, i
+    sum : = 0
+    i   : = 1
 
     % set array values
-    'loop'
-    'exit' 1 'when' i '>' 5 
-      int_list '[' i ']' ':' '=' i
-      i   ':' '=' i   '+' 1
-    'pool'
+    loop
+    exit 1 when i > 5 
+      int_list [ i ] : = i
+      i   : = i   + 1
+    pool
 
-    i   ':' '=' 1
+    i   : = 1
 
     % compute sum using array
-    'loop'
-    'exit' 1 'when' i '>' 5 
-      sum ':' '=' sum '+' int_list '[' i ']'
-      i   ':' '=' i   '+' 1
-    'pool'
+    loop
+    exit 1 when i > 5 
+      sum : = sum + int_list [ i ]
+      i   : = i   + 1
+    pool
 
-    'result' sum
+    result sum
   end
 
-  'integer' i
-  'boolean' pos_bool_list '[' 1 '.' '.'  5 ']'
-  'boolean' ned_bool_list '[' '-' 5 '.' '.' '-' 1 ']'
-  i   ':' '=' 1
+  integer i
+  boolean pos_bool_list [ 1 . .  5 ]
+  boolean ned_bool_list [ - 5 . . - 1 ]
+  i   : = 1
 
   % set array values
-  'loop'
-  'exit' 1 'when' i '>' 5 
-    pos_bool_list '[' i ']' ':' '=' 1
-    neg_bool_list '[' '-'  i ']' ':' '=' 1
-    i   ':' '=' i   '+' 1
-  'pool'
+  loop
+  exit 1 when i > 5 
+    pos_bool_list [ i ] : = 1
+    neg_bool_list [ -  i ] : = 1
+    i   : = i   + 1
+  pool
 
-  i   ':' '=' 1
+  i   : = 1
 
   % negate the value stored at each array index in both arrays
-  'loop'
-  'exit' 1 'when' i '>' 5 
-    pos_bool_list '[' i ']' ':' '=' '-' pos_bool_list '[' i ']'
-    neg_bool_list '[' '-' i ']' ':' '=' '-' neg_bool_list '[' '-' i ']'
-    i   ':' '=' i   '+' 1
-  'pool'
+  loop
+  exit 1 when i > 5 
+    pos_bool_list [ i ] : = - pos_bool_list [ i ]
+    neg_bool_list [ - i ] : = - neg_bool_list [ - i ]
+    i   : = i   + 1
+  pool
 end

@@ -1,54 +1,54 @@
 % toy programs for assignment 1 of csc488
 % contains non-recursive functions / procedures with and without parameters
-'begin'
+begin
 
   % return the sum from 1 to x
-  'integer' sum_to '(' 'integer' x ')'
-  'begin'
-    'integer' sum, i
-    sum ':' '=' 0
-    i   ':' '=' 1
+  integer sum_to ( integer x )
+  begin
+    integer sum, i
+    sum : = 0
+    i   : = 1
 
-    'loop'
-    'exit' 1 'when' i '>' x
-      sum ':' '=' sum '+' i
-      i   ':' '=' i   '+' 1
-    'pool'
+    loop
+    exit 1 when i > x
+      sum : = sum + i
+      i   : = i   + 1
+    pool
 
-    'result' sum
-  'end'
+    result sum
+  end
 
   % hello world
-  'integer' hello_world '(' ')'
-  'begin'
-    'put' "Hello World!"
-    'result' 1
-  'end'
+  integer hello_world ( )
+  begin
+    put "Hello World!"
+    result 1
+  end
 
   % output x op y where x, y, and op are integers and op specifies some arithmetic operation
-  'proc' do_arithmetic_op '(' 'integer' x, 'integer' y, 'integer' op ')'
-  'begin'
-    'if' op '=' 1 'then'
-      'put' "x + y = " x '+' y
-    'fi'
-    'if' op '=' 2 'then'
-      'put' "x - y = " x '-' y
-    'fi'
-    'if' op '=' 3 'then'
-      'put' "x * y = " x '*' y
-    'fi'
-    'if' op '=' 3 'then'
-      'put' "x / y = " x '/' y
-    'else'
-      'put' "invalid op, result is -1"
-    'fi'
-  'end'
+  proc do_arithmetic_op ( integer x, integer y, integer op )
+  begin
+    if op = 1 then
+      put "x + y = " x + y
+    fi
+    if op = 2 then
+      put "x - y = " x - y
+    fi
+    if op = 3 then
+      put "x * y = " x * y
+    fi
+    if op = 3 then
+      put "x / y = " x / y
+    else
+      put "invalid op, result is -1"
+    fi
+  end
 
-  % execute all the sum_to function and print its' output
-  'proc' main '(' ')'
-  'begin'
-    'put' "sum from 1 to 10 is " sum_to '(' 10 ')'
-  'end'
+  % execute all the sum_to function and print its output
+  proc main ( )
+  begin
+    put "sum from 1 to 10 is " sum_to ( 10 )
+  end
 
   main ()
-'end'
+end

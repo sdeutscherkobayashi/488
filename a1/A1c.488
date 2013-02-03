@@ -2,55 +2,55 @@
 % contains all types of loop control structure 
 
   % return the sum from 1 to x
-  'integer' sum_to '(' 'integer' x ')'
+  integer sum_to ( integer x )
   begin
-    'integer' sum, i
-    sum ':' '=' 0
-    i   ':' '=' 1
+    integer sum, i
+    sum : = 0
+    i   : = 1
 
-    'loop'
-    'exit' 1 'when' i '>' x
-      sum ':' '=' sum '+' i
-      i   ':' '=' i   '+' 1
-    'pool'
+    loop
+    exit 1 when i > x
+      sum : = sum + i
+      i   : = i   + 1
+    pool
 
-    'result' sum
+    result sum
   end
 
   % iterate over 2 variables
-  'proc' lots_of_iteration '(' ')'
+  proc lots_of_iteration ( )
   begin
-    'integer' i, j
-    i   ':' '=' 1
-    j   ':' '=' 1
+    integer i, j
+    i   : = 1
+    j   : = 1
 
     % loop with exit condition inside loop
-    'loop'
-    'exit' 1 'when' i '>' 5
-      'if' i '=' 5 'then'
-        'exit'
-      'fi'
-      i   ':' '=' i   '+' 1
-    'pool'
+    loop
+    exit 1 when i > 5
+      if i = 5 then
+        exit
+      fi
+      i   : = i   + 1
+    pool
 
-    i   ':' '=' 1
+    i   : = 1
 
     % outter and inner loop going to 5 in each
-    'loop'
-      'loop'
-        'put' "i = " i
-        'put' "j = " j
-        'if' '(' i '=' 5 ')' '&' '(' j '=' 5 ')' 'then'
-          'exit' 1
-        'fi'
-        'if' j '=' 5 'then'
-          j ':' '=' 1
-          'exit'
-        'fi'
-        j ':' '=' j '+' 1
-      'pool'
-      i ':' '=' i '+' 1
-    'pool'
+    loop
+      loop
+        put "i = " i
+        put "j = " j
+        if ( i = 5 ) & ( j = 5 ) then
+          exit 1
+        fi
+        if j = 5 then
+          j : = 1
+          exit
+        fi
+        j : = j + 1
+      pool
+      i : = i + 1
+    pool
 
   end
 end

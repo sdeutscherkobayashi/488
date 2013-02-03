@@ -117,8 +117,8 @@ terminal String  TEXTCONST	;
 
 nonterminal	program, statementList, statement, scope, declarationList,
             declaration, functionHead, procedureHead, variablenames,
-            bound, type, outputs, output, input, argumentList, arguments,
-            parameterList, parameters, variable, expression,
+            bound, type, outputs, output, input, argumentList,
+            arguments, parameterList, parameters, variable, expression,
             variablename, arrayname, functionname, procedurename,
             parametername;
 
@@ -187,9 +187,18 @@ variablenames   ::= variablename |
                     variablename COMMA variablenames ;
 bound           ::= INTCONST | MINUS INTCONST ;
 type            ::= INTEGER | BOOLEAN ;
+
 outputs         ::= output |
-                    output COMMA outputs ;
+                    output COMMA outputs;
 output          ::= TEXTCONST | SKIP ;
+
+input		       	::= variable |
+                    variable COMMA input ;
+
+argumentList	  ::= arguments | ;
+arguments   		::= expression |
+					          expression COMMA arguments;
+
 variablename    ::= IDENT ;
 functionname    ::= IDENT ;
 procedurename   ::= IDENT ;

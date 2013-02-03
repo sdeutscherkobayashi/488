@@ -118,7 +118,7 @@ terminal String  TEXTCONST	;
 nonterminal	program, statementList, statement, scope, declarationList,
             declaration, functionHead, procedureHead, variablenames,
             bound, type, outputs, output, input, argumentList,
-            arguments, parameterList, parameters, variable, expression,
+            arguments, parameterList, parameters, variable, expression, expressions,
             variablename, arrayname, functionname, procedurename,
             parametername;
 
@@ -156,7 +156,8 @@ program         ::= scope ;
 
 statementList   ::= statementList statement |
                     statement;
-statement       ::= IF expression THEN statement FI |
+statement       ::= variable COLON EQUAL expressions |
+					IF expression THEN statement FI |
                     IF expression THEN statement ELSE statement FI |
                     LOOP statementList POOL |
                     EXIT | EXIT INTCONST |
@@ -209,28 +210,27 @@ parameterList	  ::= parameters | //EMPTY
 variable     		::= variablename |
 					          arrayname L_SQUARE expression R_SQUARE ;
 
-expression		  ::= INTEGER |
-					          MINUS expression |
-//					          expression PLUS expression |
-//					          expression MINUS expression |
-//					          expression TIMES expression |
-//					          expression DIVIDE expression |
-					          TRUE |
-					          FALSE |
-					          NOT expression |
-//					          expression AND expression |
-//					          expression OR expression |
-//					          expression EQUAL expression |
-//					          expression NOT EQUAL expression |
-//					          expression LESS expression |
-//					          expression LESS EQUAL expression |
-//					          expression GREATER expression |
-//					          expression GREATER EQUAL expression |
-//					          L_PAREN expression R_PAREN |
-//					          variable |
-//					          functionname L_PAREN argumentList R_PAREN |
-					            parametername ;
-
+expression			::= INTEGER |
+						MINUS expression |
+						TRUE |
+						FALSE |
+						NOT expression |
+						parametername ;
+expressions			::=	expression PLUS expressions |
+					          expression MINUS expressions |
+					          expression TIMES expressions |
+					          expression DIVIDE expressions |
+					          expression AND expressions |
+					          expression OR expressions |
+					          expression EQUAL expressions |
+					          expression NOT EQUAL expressions |
+					          expression LESS expressions |
+					          expression LESS EQUAL expressions |
+					          expression GREATER expressions |
+					          expression GREATER EQUAL expressions |
+					          L_PAREN expression R_PAREN |
+					          variable |
+					          functionname L_PAREN argumentList R_PAREN ;
 arrayname     ::= IDENT ;
 variablename	::= IDENT ;
 functionname	::= IDENT ;

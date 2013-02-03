@@ -74,7 +74,6 @@ parser code {:
  * token, add it here.
  */
 init with {:
-	System.out.println("this is some init code\n");
 :};
 
 /* User code components 4: scanner specification code.
@@ -118,7 +117,7 @@ terminal String  TEXTCONST	;
 
 nonterminal	program, statementList, statement, scope, declarationList,
             declaration, functionHead, procedureHead, variablenames,
-            bound, type, output, input, arguementList, arguements,
+            bound, type, outputs, output, input, argumentList, arguments,
             parameterList, parameters, variable, expression,
             variablename, arrayname, functionname, procedurename,
             parametername;
@@ -154,13 +153,23 @@ program		::=	;				// the main program
 
 ****************************************************************************/
 program         ::= scope ;
+
 statementList   ::= statementList statement |
                     statement;
-statement       ::= LOOP statementList POOL |
+statement       ::= IF expression THEN statement FI |
+                    IF expression THEN statement ELSE statement FI |
+                    LOOP statementList POOL |
                     EXIT | EXIT INTCONST |
-                    PUT output | GET input ;
+                    EXIT WHEN expression |
+                    EXIT INTCONST WHEN expression |
+                    RESULT expression | RETURN |
+                    PUT outputs | GET input |
+                    procedurename L_PAREN argumentList R_PAREN |
+                    scope ;
+
 scope           ::= BEGIN declarationList statementList END |
                     BEGIN statementList END ;
+
 declarationList ::= declarationList declaration |
                     declaration ;
 declaration     ::= type variablenames |
@@ -168,19 +177,19 @@ declaration     ::= type variablenames |
                     procedureHead scope |
                     FORWARD functionHead |
                     FORWARD procedureHead ;
+
 functionHead    ::= type functionname L_PAREN R_PAREN ;
 procedureHead   ::= PROCEDURE procedurename L_PAREN R_PAREN ;
+
 variablenames   ::= variablename |
+                    variablename L_SQUARE INTCONST R_SQUARE |
+                    variablename L_SQUARE bound DOT DOT bound R_SQUARE |
                     variablename COMMA variablenames ;
-bound           ::= INTCONST MINUS INTCONST ;
+bound           ::= INTCONST | MINUS INTCONST ;
 type            ::= INTEGER | BOOLEAN ;
+outputs         ::= output |
+                    output COMMA outputs ;
 output          ::= TEXTCONST | SKIP ;
 variablename    ::= IDENT ;
 functionname    ::= IDENT ;
 procedurename   ::= IDENT ;
-input			::= variable |
-					input COMMA input;
-argumentList	::= arguments |
-					//EMPTY;
-arguments		::= expression |
-					arguments COMMA arguments;

@@ -117,7 +117,7 @@ terminal String  TEXTCONST	;
 
 nonterminal	program, statementList, statement, scope, declarationList,
             declaration, functionHead, procedureHead, variablenames,
-            bound, type, outputs, output, input, argumentList,
+            bound, type, outputs, output, input, argumentList, expression,
             arguments, parameterList, parameters, variable, expression_0,
             expression_1, expression_2, expression_3, expression_4, expression_5,
             expression_6, variablename, arrayname, functionname, procedurename,
@@ -192,7 +192,8 @@ type            ::= INTEGER | BOOLEAN ;
 
 outputs         ::= output |
                     output COMMA outputs;
-output          ::= TEXTCONST | SKIP ;
+output          ::= TEXTCONST | SKIP |
+                    expression_6 ;
 
 input		       	::= variable |
                     variable COMMA input ;
@@ -211,25 +212,35 @@ parameterList	  ::= parameters | //EMPTY
 variable     		::= variablename |
 					          arrayname L_SQUARE expression_6 R_SQUARE ;
 
-expression_0    ::= MINUS L_PAREN expression_6 R_PAREN |
-                    L_PAREN expression_6 R_PAREN |
+expression      ::= L_PAREN expression_6 R_PAREN |
                     functionname L_PAREN argumentList R_PAREN |
                     variable |
                     TRUE | FALSE |
                     INTCONST ;
+
+expression_0    ::= MINUS expression |
+                    expression ;
+
+// left assoc
 expression_1    ::= expression_1 TIMES expression_0 |
                     expression_1 DIVIDE expression_0 |
                     expression_0 ;
+
+// left assoc
 expression_2    ::= expression_2 PLUS expression_1 |
                     expression_2 MINUS expression_1 |
                     expression_1 ;
-expression_3    ::= expression_3 EQUAL expression_2 |
-                    expression_3 NOT EQUAL expression_2 |
-                    expression_3 LESS expression_2 |
-                    expression_3 LESS EQUAL expression_2 |
-                    expression_3 GREATER expression_2 |
-                    expression_3 GREATER EQUAL expression_2 |
+
+// comparison operators are non associative
+expression_3    ::= expression_2 EQUAL expression_2 |
+                    expression_2 NOT EQUAL expression_2 |
+                    expression_2 LESS expression_2 |
+                    expression_2 LESS EQUAL expression_2 |
+                    expression_2 GREATER expression_2 |
+                    expression_2 GREATER EQUAL expression_2 |
                     expression_2 ;
+
+// left assoc
 expression_4    ::= NOT expression_4 | expression_3 ;
 expression_5    ::= expression_5 AND expression_4 |
                     expression_4 ;

@@ -118,9 +118,10 @@ terminal String  TEXTCONST	;
 nonterminal	program, statementList, statement, scope, declarationList,
             declaration, functionHead, procedureHead, variablenames,
             bound, type, outputs, output, input, argumentList,
-            arguments, parameterList, parameters, variable, expression, expressions,
-            variablename, arrayname, functionname, procedurename,
-            parametername;
+            arguments, parameterList, parameters, variable, expression_0,
+            expression_1, expression_2, expression_3, expression_4, expression_5,
+            expression_6, variablename, arrayname, functionname, procedurename,
+            parametername ;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -156,14 +157,14 @@ program         ::= scope ;
 
 statementList   ::= statementList statement |
                     statement;
-statement       ::= variable COLON EQUAL expressions |
-					          IF expression THEN statement FI |
-                    IF expression THEN statement ELSE statement FI |
+statement       ::= variable COLON EQUAL expression_6 |
+					          IF expression_6 THEN statement FI |
+                    IF expression_6 THEN statement ELSE statement FI |
                     LOOP statementList POOL |
                     EXIT | EXIT INTCONST |
-                    EXIT WHEN expression |
-                    EXIT INTCONST WHEN expression |
-                    RESULT expression | RETURN |
+                    EXIT WHEN expression_6 |
+                    EXIT INTCONST WHEN expression_6 |
+                    RESULT expression_6 | RETURN |
                     PUT outputs | GET input |
                     procedurename L_PAREN argumentList R_PAREN |
                     scope ;
@@ -199,8 +200,8 @@ input		       	::= variable |
 argumentList	  ::= arguments |
                     //EMPTY
 					          ;
-arguments	     	::= expression |
-					          expression COMMA arguments ;
+arguments	     	::= expression_6 |
+					          expression_6 COMMA arguments ;
 
 parameters		  ::= type parametername |
 					          type parametername COMMA parameters ;
@@ -208,29 +209,33 @@ parameterList	  ::= parameters | //EMPTY
 					          ;
 
 variable     		::= variablename |
-					          arrayname L_SQUARE expression R_SQUARE ;
+					          arrayname L_SQUARE expression_6 R_SQUARE ;
 
-expression			::= INTCONST |
-						        TRUE |
-                    FALSE |
-                    parametername ;
-expressions			::=	expression PLUS expressions |
-					          expression MINUS expressions |
-					          expression TIMES expressions |
-					          expression DIVIDE expressions |
-					          expression AND expressions |
-					          expression OR expressions |
-					          expression EQUAL expressions |
-					          expression NOT EQUAL expressions |
-					          expression LESS expressions |
-					          expression LESS EQUAL expressions |
-					          expression GREATER expressions |
-					          expression GREATER EQUAL expressions |
-					          L_PAREN expressions R_PAREN |
-						        MINUS expressions |
-                    NOT expressions |
-					          variable |
-					          functionname L_PAREN argumentList R_PAREN ;
+expression_0    ::= MINUS L_PAREN expression_6 R_PAREN |
+                    L_PAREN expression_6 R_PAREN |
+                    functionname L_PAREN argumentList R_PAREN |
+                    variable |
+                    TRUE | FALSE |
+                    INTCONST ;
+expression_1    ::= expression_1 TIMES expression_0 |
+                    expression_1 DIVIDE expression_0 |
+                    expression_0 ;
+expression_2    ::= expression_2 PLUS expression_1 |
+                    expression_2 MINUS expression_1 |
+                    expression_1 ;
+expression_3    ::= expression_3 EQUAL expression_2 |
+                    expression_3 NOT EQUAL expression_2 |
+                    expression_3 LESS expression_2 |
+                    expression_3 LESS EQUAL expression_2 |
+                    expression_3 GREATER expression_2 |
+                    expression_3 GREATER EQUAL expression_2 |
+                    expression_2 ;
+expression_4    ::= NOT expression_4 | expression_3 ;
+expression_5    ::= expression_5 AND expression_4 |
+                    expression_4 ;
+expression_6    ::= expression_6 OR expression_5 |
+                    expression_5 ;
+
 arrayname       ::= IDENT ;
 variablename  	::= IDENT ;
 functionname  	::= IDENT ;

@@ -1,0 +1,43 @@
+CSC488 Assignment 2 - LALR(1) Parser
+
+Group Members
+Steven Deutscher-Kobayashi (g0kobe) - 994370532
+Viky Chow (g9chowpa) - 
+
+The design of our parser uses productions very similar to that of the
+source language definition.
+
+In order to remove any ambiguities in the language, productions rules
+whose left hand side non terminal produces only the same non terminal
+were rewritten in the form,
+
+A -> A A | a | b
+to
+A_List -> A_List A | A_List
+A  -> a | b
+
+There is now only one left most derivation possible for all strings
+generate by this grammar
+
+Precedence in expressions was implemented through the use of
+multiple non terminals. The precedence is as followed with 0
+having the highest precedence,
+
+0. unary minus
+1. * /
+2. + binary -
+3. = # < <= > >=
+4. !
+5. &
+6. |
+
+1, 2, 5, 6 are left associative and
+3 do not associate.
+
+In the grammar definition, non terminal expression_0 corresponds to
+the above 0. By defining low precedence operations in terms of higher
+precedence operators we get the intended precedence relations.
+
+For testing we added a tst folder containing .488 files for each
+logical grouping of non terminals. WE also included a script to
+execute the parser on each of those files

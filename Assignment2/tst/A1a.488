@@ -1,0 +1,97 @@
+% toy programs for assignment 1 of csc488
+% contains functions / procedures that use all arithmetic, logical, and comparison operators of the 488 source language
+begin
+  % return the sum from 1 to x
+  integer sum_to ( integer x )
+  begin
+    integer sum, i
+    sum := 0
+    i := 1
+
+    loop
+    exit 1 when i > x 
+      sum := sum + i
+      i   := i   + 1
+    pool
+
+    result sum
+  end
+
+  % return x op y where x, y, and op are integers and op specifies some arithmetic operation 
+  integer do_arithmetic_op(integer x, integer y, integer op)
+  begin
+    if op = 1 then
+      result x + y
+    fi
+    if op = 2 then
+      result x - y
+    fi
+    if op = 3 then
+      result x * y
+    fi
+    if op = 3 then
+      result x / y
+    else
+      put "invalid op result is -1"
+      result -1
+    fi
+  end
+
+  % return x op y where x and y are boolean and op is an integer specifies some boolean operation 
+  boolean do_logical_op(boolean x, boolean y, integer op)
+  begin
+    if op = 1 then
+      result x & y
+    fi
+    if op = 2 then
+      result x | y
+    fi
+    if op = 3 then
+      result x = y
+    fi
+    if op = 3 then
+      result x ! =  y
+    fi
+    if op = 4 then
+      result x <  y
+    fi
+    if op = 5 then
+      result x < =  y
+    fi
+    if op = 6 then
+      result x >  y
+    fi
+    if op = 7 then
+      result x > =  y
+    else
+      put "invalid op, result is false"
+      result false 
+    fi
+  end
+
+  % return x exclusive or y (equiv to not equals..) 
+  boolean xor ( boolean x, boolean y )
+  begin
+    result ( x | y ) & - ( x & y )
+  end
+
+  % return true 
+  boolean truth ( )
+  begin
+    result true 
+  end
+
+
+  % execute all the functions and procedures
+  proc main ( )
+  begin
+    put "sum from 1 to 10 is " sum_to ( 10 )
+    put "1 | 1 is " do_arithmetic_op ( 1, 1, 1 )
+    put "1 - 1 is " do_arithmetic_op ( 1, 1, 2 )
+    put "1 * 1 is " do_arithmetic_op ( 1, 1, 3 )
+    put "1 / 1 is " do_arithmetic_op ( 1, 1, 4 )
+    put "using an invalid op is " do_arithmetic_op ( 1, 1, 5 )
+  end
+
+  main ()
+end

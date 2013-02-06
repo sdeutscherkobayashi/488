@@ -1,0 +1,7 @@
+% test program for type
+begin
+  integer x
+  boolean y
+
+  put "hello"
+end

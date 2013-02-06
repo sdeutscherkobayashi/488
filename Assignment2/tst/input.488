@@ -1,0 +1,6 @@
+% test program for input
+begin
+  integer x, y, z
+  get x
+  get x, y, z
+end

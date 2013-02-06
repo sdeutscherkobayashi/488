@@ -1,0 +1,51 @@
+begin
+  forward boolean hello()
+  forward proc world()
+  integer x, y, z
+  boolean debug
+
+  integer calc_sum(integer coolParam, boolean debug)
+  begin
+    integer sum, i
+    integer ls[10]
+    integer bd[1..10]
+
+    i := -1
+    not_true := !false
+    sum := 10 + 9 - 4 * 60
+
+    if i = -1 then
+      put "i is 1"
+    else
+      put "i is not 1"
+      put "i is not 1"
+    fi
+
+    put "calc sum"
+    put 1 < (2 / 1)
+
+    result -1
+  end
+
+  proc helloWorld()
+  begin
+		put "hello world"
+
+    loop
+      exit
+    pool
+
+    loop
+      exit 1
+    pool
+
+    return
+  end
+
+  begin
+    put "a random useless scope"
+    put "blah blah", "blah"
+  end
+
+  put "done"
+end

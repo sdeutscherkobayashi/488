@@ -1,0 +1,9 @@
+% test program for variables
+begin
+  integer x
+  integer a, b, c
+  integer A[10]
+  integer B[1..10]
+
+  put "hello"
+end

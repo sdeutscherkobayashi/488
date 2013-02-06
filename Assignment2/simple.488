@@ -1,0 +1,18 @@
+begin
+  integer x, y, z
+  boolean debug
+
+  integer calc_sum()
+  begin
+    integer sum, i
+
+    put "calc sum"
+  end
+
+  proc helloWorld()
+  begin
+		put "hello world"
+  end
+
+  put "done"
+end

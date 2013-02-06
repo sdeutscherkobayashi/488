@@ -158,8 +158,8 @@ program         ::= scope ;
 statementList   ::= statementList statement |
                     statement;
 statement       ::= variable COLON EQUAL expression_6 |
-					          IF expression_6 THEN statement FI |
-                    IF expression_6 THEN statement ELSE statement FI |
+					          IF expression_6 THEN statementList FI |
+                    IF expression_6 THEN statementList ELSE statementList FI |
                     LOOP statementList POOL |
                     EXIT | EXIT INTCONST |
                     EXIT WHEN expression_6 |

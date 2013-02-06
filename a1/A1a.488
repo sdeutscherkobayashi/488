@@ -5,20 +5,20 @@ begin
   integer sum_to ( integer x )
   begin
     integer sum, i
-    sum : = 0
-    i   : = 1
+    sum := 0
+    i := 1
 
     loop
     exit 1 when i > x 
-      sum : = sum + i
-      i   : = i   + 1
+      sum := sum + i
+      i   := i   + 1
     pool
 
     result sum
   end
 
   % return x op y where x, y, and op are integers and op specifies some arithmetic operation 
-  integer do_arithmetic_op ( integer x, integer y, integer op )
+  integer do_arithmetic_op(integer x, integer y, integer op)
   begin
     if op = 1 then
       result x + y
@@ -32,13 +32,13 @@ begin
     if op = 3 then
       result x / y
     else
-      put "invalid op, result is -1"
-      result - 1
+      put "invalid op result is -1"
+      result -1
     fi
   end
 
   % return x op y where x and y are boolean and op is an integer specifies some boolean operation 
-  boolean do_logical_op ( boolean x, boolean y, integer op )
+  boolean do_logical_op(boolean x, boolean y, integer op)
   begin
     if op = 1 then
       result x & y

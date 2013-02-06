@@ -29,16 +29,16 @@ begin
   proc do_arithmetic_op ( integer x, integer y, integer op )
   begin
     if op = 1 then
-      put "x + y = " x + y
+      put "x + y = ", x + y
     fi
     if op = 2 then
-      put "x - y = " x - y
+      put "x - y = ", x - y
     fi
     if op = 3 then
-      put "x * y = " x * y
+      put "x * y = ", x * y
     fi
     if op = 3 then
-      put "x / y = " x / y
+      put "x / y = ", x / y
     else
       put "invalid op, result is -1"
     fi

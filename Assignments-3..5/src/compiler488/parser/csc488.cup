@@ -160,9 +160,12 @@ start with program;
 /**********************************************
  *            PROGRAM/SCOPES                  *
  **********************************************/
-program		::=	scope					// the main program
+program		::=	scope:programScope					// the main program
       {:
-        RESULT = new Program();
+        Program p = new Program();
+        p.setStatements(programScope.getStatements());
+        p.setDeclarations(programScope.getDeclarations());
+        RESULT = p;
       :}
 ;
 
@@ -186,15 +189,16 @@ scope		::=	BEGIN declarations:decls statements:stmts END 	// scope with declarat
  *            STATEMENTS                      *
  **********************************************/
 
-statements	::=	statement						// sequence of statements
-      {:
-        RESULT = new ASTList<Stmt>();
-      :}
-		|	statements statement:stmt
+statements	::=	statement:stmt						// sequence of statements
       {:
         ASTList<Stmt> stmtList = new ASTList<Stmt>();
         stmtList.addLast(stmt);
         RESULT = stmtList;
+      :}
+		|	statements:stmts statement:stmt
+      {:
+        stmts.addLast(stmt);
+        RESULT = stmts;
       :}
 		;
 

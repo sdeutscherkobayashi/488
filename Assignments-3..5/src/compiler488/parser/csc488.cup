@@ -1,9 +1,13 @@
-//  $Revision: 1.14 $ $Date: 2013/02/04 20:41:03 $ $Author: dw $  
+//  $Revision: 1.14 $ $Date: 2013/02/04 20:41:03 $ $Author: dw $
 // Package and import specifications section.
 
 package compiler488.parser;
 
 import java_cup.runtime.*;		// Must always import this.
+import compiler488.ast.decl.*;
+import compiler488.ast.expn.*;
+import compiler488.ast.stmt.*;
+import compiler488.ast.*;
 
 /* User code components 1: action code components.
  * Code to be used inside the actions triggered when productions are matched.
@@ -13,13 +17,13 @@ import java_cup.runtime.*;		// Must always import this.
 // your code goes HERE
 //:};
 
-/* User code components 2: parser code components. 
+/* User code components 2: parser code components.
  * Modifications to the default generated parser
  */
 parser code {:
 
 	String lastError;
-	
+
     /** Override the report_error method so it will display the line and
      * column of where the error occurred in the input as well as the
      * reason for the error which is passed into the method in the
@@ -30,7 +34,7 @@ parser code {:
     public void report_error(String message, Object info)
 	{
 	String st =  "Error";
-   
+
         if (info instanceof java_cup.runtime.Symbol)
 	    {
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
@@ -40,7 +44,7 @@ parser code {:
              * If either is < 0 the parser may have run off the end of the program
              * and a Syntax Error message without line number may be printed.
 	     */
-   
+
             if (s.left >= 0)				// Check line number.
 		{
                 st += " in line " + (s.left + 1);
@@ -54,15 +58,15 @@ parser code {:
         System.err.println (st);
         lastError = st;
 	}
-   
+
     /** Override the report_fatal_error method to use the report_error method. */
     /** @throws SyntaxErrorException						*/
     public void report_fatal_error (String message, Object info) throws SyntaxErrorException
 	{
         report_error (message, info);
-        throw new SyntaxErrorException (lastError); 
+        throw new SyntaxErrorException (lastError);
 	}
-   
+
    /** version string for printing version in Main */
    public static final String version =
      " $Revision: 1.14 $ $Date: 2013/02/04 20:41:03 $Author: dw $" ;
@@ -93,9 +97,9 @@ init with {:
  * "left", "right", "nonassoc", "import", and "package".
  */
 
-// DEFINITIONS for CSC488S Source Language  Winter  2012/2013 
+// DEFINITIONS for CSC488S Source Language  Winter  2012/2013
 
-// Terminals returned by the scanner with no value attached.  
+// Terminals returned by the scanner with no value attached.
 terminal 	BOOLEAN,	INTEGER,	BEGIN		;
 terminal	ELSE,	END,	EXIT,   FI,	FORWARD	;
 terminal	IF,	GET, 	LOOP,	POOL,	PROCEDURE,	PUT	;
@@ -115,15 +119,22 @@ terminal String  TEXTCONST	;
 // Non-terminals that have no value.
 // nonterminal xxx
 
-nonterminal	program,	statement,	statements,	scope	;
-nonterminal	declarations,	declaration,	type,	bound	;
+nonterminal Program	program ;
+nonterminal Scope scope ;
+nonterminal	Stmt statement ;
+nonterminal ASTList<Stmt>	statements ;
+nonterminal Declaration	declaration ;
+nonterminal	ASTList<Declaration> declarations ;
+nonterminal	type,	bound	;
 nonterminal	variablenames,	variablename,	functionHead,	procedureHead	;
 nonterminal	parameterList,  argumentList			;
 nonterminal	arguments,	parameter,	parameters	;
 nonterminal	inputs,		output,		outputs ;
-nonterminal 	expression,	conjunction,	negation,	compareExpn ;
+nonterminal Expn 	expression ;
+nonterminal	conjunction,	negation,	compareExpn ;
 nonterminal	arithExpn,	term,    	factor		;
-nonterminal	primary,	constant,	variable	;
+nonterminal	primary,	constant ;
+nonterminal ConstExpn	variable	;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -146,36 +157,111 @@ start with program;
  * reads one more token before it will act on the production.
  */
 
-program		::=	scope	;				// the main program
+/**********************************************
+ *            PROGRAM/SCOPES                  *
+ **********************************************/
+program		::=	scope					// the main program
+      {:
+        RESULT = new Program();
+      :}
+;
 
-scope		::=	BEGIN  declarations statements  END  	// scope with declarations and statements
-		|	BEGIN statements  END 			// scope with statments only
+
+scope		::=	BEGIN declarations:decls statements:stmts END 	// scope with declarations and statements
+      {:
+        Scope s = new Scope();
+        s.setDeclarations(decls);
+        s.setStatements(stmts);
+        RESULT = s;
+      :}
+		|	BEGIN statements:stmts  END 			// scope with statments only
+      {:
+        Scope s = new Scope();
+        s.setStatements(stmts);
+        RESULT = s;
+      :}
 		;
 
+/**********************************************
+ *            STATEMENTS                      *
+ **********************************************/
+
 statements	::=	statement						// sequence of statements
-		|	statements statement
+      {:
+        RESULT = new ASTList<Stmt>();
+      :}
+		|	statements statement:stmt
+      {:
+        ASTList<Stmt> stmtList = new ASTList<Stmt>();
+        stmtList.addLast(stmt);
+        RESULT = stmtList;
+      :}
 		;
 
 declarations	::=	declaration						// sequence of declarations
-		|	declarations declaration
+      {:
+        RESULT = new ASTList<Declaration>();
+      :}
+		|	declarations declaration:decl
+      {:
+        ASTList<Declaration> declList = new ASTList<Declaration>();
+        declList.addLast(decl);
+        RESULT = declList;
+      :}
 		;
 
 
-statement	::=	variable COLON EQUAL expression				// assignment statement
-		|	IF expression THEN statements FI 			// if statements
-		|	IF expression THEN statements ELSE statements FI	
-		|	LOOP statements POOL					// loop statement
+statement	::=	variable:var COLON EQUAL expression:expr				// assignment statement
+      {:
+        AssignStmt assignmentStmt = new AssignStmt();
+        assignmentStmt.setLval(var);
+        assignmentStmt.setRval(expr);
+        RESULT = assignmentStmt;
+      :}
+
+		|	IF expression:expr THEN statements:stmts FI 			// if statements
+      {:
+        IfStmt ifStmt = new IfStmt();
+        ifStmt.setCondition(expr);
+        ifStmt.setWhenTrue(stmts);
+        RESULT = ifStmt;
+      :}
+
+		|	IF expression:expr THEN statements:ifStmts ELSE statements:elseStmts FI
+      {:
+        IfStmt ifStmt = new IfStmt();
+        ifStmt.setCondition(expr);
+        ifStmt.setWhenTrue(ifStmts);
+        ifStmt.setWhenFalse(elseStmts);
+        RESULT = ifStmt;
+      :}
+
+		|	LOOP statements:stmts POOL					// loop statement
+      {:
+        LoopStmt loopStmt = new LoopStmt();
+        loopStmt.setBody(stmts);
+        RESULT = loopStmt;
+      :}
+
 		|	EXIT							// exit statements
+      {:
+        RESULT = new ExitStmt();
+      :}
+
 		|	EXIT INTCONST
 		|	EXIT WHEN expression
 		|	EXIT INTCONST WHEN expression
 		|	RESULT expression 					// return from function
 		|	RETURN 							// return from procedure
-		|	IDENT L_PAREN  argumentList  R_PAREN 			// call procedure 
+		|	IDENT L_PAREN  argumentList  R_PAREN 			// call procedure
 		|	PUT outputs						// input/output statments
 		|	GET  inputs
 		|	scope							// embedded scope
 		;
+
+/**********************************************
+ *            DECLARATIONS                    *
+ **********************************************/
 
 declaration	::=	type variablenames 					// declare scalar/array variables
 		|	functionHead  scope					// function declaration
@@ -185,7 +271,7 @@ declaration	::=	type variablenames 					// declare scalar/array variables
 		;
 
 variablenames	::=	variablename  				// list of variables being declared
-		|	variablenames COMMA variablename 
+		|	variablenames COMMA variablename
 		;
 
 variablename	::=	IDENT 						// scalar variable
@@ -275,7 +361,7 @@ factor		::=	primary				// unary minus
 		;
 
 primary		::=	constant				// integer or boolean constant
-		|	variable				// scalar, array element 
+		|	variable				// scalar, array element
 		|	IDENT L_PAREN argumentList R_PAREN 	// function call
 		| 	L_PAREN  expression  R_PAREN		// parenthesized expression
 		;
@@ -285,7 +371,7 @@ constant	::=	INTCONST	// integer constant
 		|	FALSE		// constant false
 		;
 
-variable	::=	IDENT					// scalar variable 
+variable	::=	IDENT					// scalar variable
 		|	IDENT L_SQUARE expression R_SQUARE	// element of an array
 		;
 

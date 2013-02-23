@@ -3,19 +3,20 @@ package compiler488.ast.stmt;
 import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
+import compiler488.ast.ASTList;
 
 /**
  * Represents a infinite loop. 
  */
 public class LoopStmt extends Stmt {
 
-	protected Stmt body ;	  // body of the loop
+	protected ASTList<Stmt> body ;	  // body of the loop
 
-	public Stmt getBody() {
+	public ASTList<Stmt> getBody() {
 		return body;
 	}
 
-	public void setBody(Stmt body) {
+	public void setBody(ASTList<Stmt> body) {
 		this.body = body;
 	}
 
@@ -30,7 +31,7 @@ public class LoopStmt extends Stmt {
 	@Override
 	public void printOn(PrintStream out, int depth) {
 		Indentable.printIndentOnLn(out, depth, "loop " );
-		body.printOn(out, depth + 1);
+		body.printOnSeperateLines(out, depth + 1);
 		Indentable.printIndentOnLn(out, depth, " pool ");
 	}
 }

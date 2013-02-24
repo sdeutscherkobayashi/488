@@ -1,0 +1,20 @@
+% test program for declarations
+% also tests functions / procedures defns
+begin
+  integer a_declared_var
+
+  integer a_function(integer arg)
+  begin
+    put "I am a test func"
+  end
+
+  proc a_procedure(integer arg)
+  begin
+    put "I am a test procedure"
+  end
+
+  forward integer a_forward_function()
+  forward proc a_forward_procedure()
+
+  put "every scope needs one statement!"
+end

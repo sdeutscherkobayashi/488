@@ -1,0 +1,7 @@
+% test program for output
+begin
+  put "hello"
+  put 1 + 1
+  put skip
+  put "hello", skip, 1 + 1
+end

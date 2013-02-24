@@ -1,0 +1,19 @@
+% test program for parameter
+begin
+  integer some_func()
+  begin
+    put "I have no params"
+  end
+
+  integer another_func(integer x)
+  begin
+    put "I have one param"
+  end
+
+  integer multi_arg_func(integer x, integer y, integer z)
+  begin
+    put "I have multiple params"
+  end
+
+  put "I need a statement"
+end

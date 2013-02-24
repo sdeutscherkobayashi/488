@@ -1,0 +1,8 @@
+% test program for scopes
+begin
+  begin
+    integer a_decl
+    put "a scope can have statements and declarations"
+  end
+  put "a scope must have at least one statement"
+end

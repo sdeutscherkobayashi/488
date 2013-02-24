@@ -7,6 +7,7 @@ import java_cup.runtime.*;		// Must always import this.
 import compiler488.ast.decl.*;
 import compiler488.ast.expn.*;
 import compiler488.ast.stmt.*;
+import compiler488.ast.type.*;
 import compiler488.ast.*;
 
 /* User code components 1: action code components.
@@ -99,6 +100,12 @@ init with {:
 
 // DEFINITIONS for CSC488S Source Language  Winter  2012/2013
 
+/**********************************************
+ *                                            *
+ *            TERMINAL DECLARATIONS           *
+ *                                            *
+ **********************************************/
+
 // Terminals returned by the scanner with no value attached.
 terminal 	BOOLEAN,	INTEGER,	BEGIN		;
 terminal	ELSE,	END,	EXIT,   FI,	FORWARD	;
@@ -116,6 +123,12 @@ terminal String  IDENT	;
 terminal Integer INTCONST	;
 terminal String  TEXTCONST	;
 
+
+/**********************************************
+ *                                            *
+ *            NON-TERMINAL DECLARATIONS       *
+ *                                            *
+ **********************************************/
 // Non-terminals that have no value.
 // nonterminal xxx
 
@@ -125,11 +138,17 @@ nonterminal	Stmt statement ;
 nonterminal ASTList<Stmt>	statements ;
 nonterminal Declaration	declaration ;
 nonterminal	ASTList<Declaration> declarations ;
-nonterminal	type,	bound	;
-nonterminal	variablenames,	variablename,	functionHead,	procedureHead	;
-nonterminal	parameterList,  argumentList			;
+nonterminal	compiler488.ast.type.Type type ;
+nonterminal	Integer bound	;
+nonterminal	ASTList<DeclarationPart> variablenames ;
+nonterminal DeclarationPart	variablename ;
+nonterminal RoutineDecl	functionHead,	procedureHead	;
+nonterminal	ASTList<ScalarDecl> parameterList ;
+nonterminal ASTList<Expn> argumentList ;
 nonterminal	arguments,	parameter,	parameters	;
-nonterminal	inputs,		output,		outputs ;
+nonterminal ASTList<Printable> outputs ;
+nonterminal	ASTList<compiler488.ast.Readable> inputs ;
+nonterminal Printable output ;
 nonterminal Expn 	expression ;
 nonterminal	conjunction,	negation,	compareExpn ;
 nonterminal	arithExpn,	term,    	factor		;
@@ -146,8 +165,14 @@ nonterminal ConstExpn	variable	;
 //precedence left PLUS, MINUS;
 //precedence left TIMES, DIVIDE;		// Higher precedence.
 
-// The grammar section.
 
+/**********************************************
+ *                                            *
+ *            GRAMMAR DEFINITION              *
+ *                                            *
+ **********************************************/
+
+// The grammar section.
 // This specifies the initial symbol of the grammar.
 start with program;
 
@@ -202,19 +227,6 @@ statements	::=	statement:stmt						// sequence of statements
       :}
 		;
 
-declarations	::=	declaration						// sequence of declarations
-      {:
-        RESULT = new ASTList<Declaration>();
-      :}
-		|	declarations declaration:decl
-      {:
-        ASTList<Declaration> declList = new ASTList<Declaration>();
-        declList.addLast(decl);
-        RESULT = declList;
-      :}
-		;
-
-
 statement	::=	variable:var COLON EQUAL expression:expr				// assignment statement
       {:
         AssignStmt assignmentStmt = new AssignStmt();
@@ -259,39 +271,54 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
         RESULT = exitStmt;
       :}
 
-		|	EXIT WHEN expression
-{:
+		|	EXIT WHEN expression:expr
+      {:
+        ExitStmt exitStmt = new ExitStmt();
+        exitStmt.setExpn(expr);
+        RESULT = exitStmt;
+      :}
 
-:}
-		|	EXIT INTCONST WHEN expression
-{:
+		|	EXIT INTCONST:level WHEN expression:expr
+      {:
+        ExitStmt exitStmt = new ExitStmt();
+        exitStmt.setLevel(level);
+        exitStmt.setExpn(expr);
+        RESULT = exitStmt;
+      :}
 
-:}
-
-		|	RESULT expression 					// return from function
-{:
-
-:}
+		|	RESULT expression:expr 					// return from function
+      {:
+        ResultStmt resultStmt = new ResultStmt();
+        resultStmt.setValue(expr);
+        RESULT = resultStmt;
+      :}
 
 		|	RETURN 							// return from procedure
-{:
+      {:
+        RESULT = new ReturnStmt();
+      :}
 
-:}
+		|	IDENT:procName L_PAREN  argumentList:argList  R_PAREN 			// call procedure
+      {:
+        ProcedureCallStmt procStmt = new ProcedureCallStmt();
+        procStmt.setName(procName);
+        procStmt.setArguments(argList);
+        RESULT = procStmt;
+      :}
 
-		|	IDENT L_PAREN  argumentList  R_PAREN 			// call procedure
-{:
+		|	PUT outputs:outputList					// input/output statments
+      {:
+        PutStmt putStmt = new PutStmt();
+        putStmt.setOutputs(outputList);
+        RESULT = putStmt;
+      :}
 
-:}
-
-		|	PUT outputs						// input/output statments
-{:
-
-:}
-
-		|	GET  inputs
-{:
-
-:}
+		|	GET  inputs:inputList
+      {:
+        GetStmt getStmt = new GetStmt();
+        getStmt.setInputs(inputList);
+        RESULT = getStmt;
+      :}
 
 		|	scope:s							// embedded scope
       {:
@@ -303,116 +330,165 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
  *            DECLARATIONS                    *
  **********************************************/
 
-declaration	::=	type variablenames 					// declare scalar/array variables
-{:
-
-:}
-
-		|	functionHead  scope					// function declaration
-{:
-
-:}
-
-		|	procedureHead  scope					// procedure delcaration
-{:
-
-:}
-
-		|       FORWARD  functionHead					// forward function declaration
-{:
-
-:}
-
-		|	FORWARD  procedureHead					// forward procedure declaration
-{:
-
-:}
+declarations	::=	declaration						// sequence of declarations
+      {:
+        RESULT = new ASTList<Declaration>();
+      :}
+		|	declarations declaration:decl
+      {:
+        ASTList<Declaration> declList = new ASTList<Declaration>();
+        declList.addLast(decl);
+        RESULT = declList;
+      :}
 		;
 
-variablenames	::=	variablename  				// list of variables being declared
-{:
+declaration	::=	type:t variablenames:variableNameList 					// declare scalar/array variables
+      {:
+        MultiDeclarations multiDecl = new MultiDeclarations();
+        multiDecl.setType(t);
+        multiDecl.setElements(variableNameList);
+      :}
 
-:}
+		|	functionHead:funcHead  scope:s					// function declaration
+      {:
+        funcHead.getRoutineBody().setBody(s);
+        RESULT = funcHead;
+      :}
 
-		|	variablenames COMMA variablename
-{:
+		|	procedureHead:procHead  scope:s					// procedure delcaration
+      {:
+        procHead.getRoutineBody().setBody(s);
+        RESULT = procHead;
+      :}
 
-:}
+		|       FORWARD  functionHead:funcHead					// forward function declaration
+      {:
+        RESULT = funcHead;
+      :}
+
+		|	FORWARD  procedureHead:procHead					// forward procedure declaration
+      {:
+        RESULT = procHead;
+      :}
 		;
 
-variablename	::=	IDENT 						// scalar variable
-{:
+/**********************************************
+ *            VARIABLES                       *
+ **********************************************/
 
-:}
+variablenames	::=	variablename:varName  				// list of variables being declared
+      {:
+        ASTList<DeclarationPart> varList = new ASTList<DeclarationPart>();
+        varList.addLast(varName);
+        RESULT = varList;
+      :}
 
-		|	IDENT L_SQUARE INTCONST R_SQUARE		// array variable with upper bound
-{:
-
-:}
-
-		|	IDENT L_SQUARE bound DOT DOT bound  R_SQUARE	// array variable with upper/lower bounds
-{:
-
-:}
+		|	variablenames:varList COMMA variablename:varName
+      {:
+        varList.addLast(varName);
+        RESULT = varList;
+      :}
 		;
 
-bound		::=	INTCONST					// positive array bound
-{:
+variablename	::=	IDENT:varName 						// scalar variable
+      {:
+        DeclarationPart var = new DeclarationPart();
+        var.setName(varName);
+        RESULT = var;
+      :}
 
-:}
+		|	IDENT:varName L_SQUARE INTCONST:size R_SQUARE		// array variable with upper bound
+      {:
+        ArrayDeclPart var = new ArrayDeclPart();
+        var.setName(varName);
+        var.setSize(size);
+        RESULT = var;
+      :}
 
-		|	MINUS INTCONST					// negative array bound
-{:
+		|	IDENT:varName L_SQUARE bound:lower DOT DOT bound:upper  R_SQUARE	// array variable with upper/lower bounds
+      {:
+        ArrayDeclPart var = new ArrayDeclPart();
+        var.setName(varName);
+        var.setSize(upper - lower + 1);
+        var.setLowerBoundary(lower);
+        var.setUpperBoundary(upper);
+        RESULT = var;
+      :}
+		;
 
-:}
+bound		::=	INTCONST:i					// positive array bound
+      {:
+        RESULT = i;
+      :}
+
+		|	MINUS INTCONST:i					// negative array bound
+      {:
+        RESULT = -i;
+      :}
 		;
 
 type		::=	INTEGER			// integer type
-{:
-
-:}
+      {:
+        RESULT = new IntegerType();
+      :}
 
 		|	BOOLEAN			// boolean type
-{:
-
-:}
+      {:
+        RESULT = new BooleanType();
+      :}
 		;
 
-functionHead	::=	type  IDENT L_PAREN parameterList R_PAREN		// function head
-{:
-
-:}
+functionHead	::=	type:t  IDENT L_PAREN parameterList:paramList R_PAREN		// function head
+      {:
+        RoutineDecl routineDecl = new RoutineDecl();
+        routineDecl.setType(t);
+        RoutineBody routineBody = new RoutineBody();
+        routineBody.setParameters(paramList);
+        routineDecl.setRoutineBody(routineBody);
+        RESULT = routineDecl;
+      :}
 		;
 
-procedureHead	::=	PROCEDURE  IDENT L_PAREN parameterList  R_PAREN		// procedure head
-{:
-
-:}
+procedureHead	::=	PROCEDURE  IDENT L_PAREN parameterList:paramList  R_PAREN		// procedure head
+      {:
+        RoutineDecl routineDecl = new RoutineDecl();
+        RoutineBody routineBody = new RoutineBody();
+        routineBody.setParameters(paramList);
+        routineDecl.setRoutineBody(routineBody);
+        RESULT = routineDecl;
+      :}
 		;
 
-outputs		::=	output			// list of output expressions
-{:
+outputs		::=	output:printable			// list of output expressions
+      {:
+        ASTList<Printable> outputList = new ASTList<Printable>();
+        outputList.addLast(printable);
+        RESULT = outputList;
+      :}
 
-:}
-
-		|	outputs COMMA output
-{:
-
-:}
+		|	outputs:outputList COMMA output:printable
+      {:
+        outputList.addLast(printable);
+        RESULT = outputList;
+      :}
 		;
 
-output		::=	expression		// integer expression
-{:
+output		::=	expression:expr		// integer expression
+      {:
+        RESULT = expr;
+      :}
 
-:}
-		|	TEXTCONST		// text constant
-{:
+		|	TEXTCONST:txt		// text constant
+      {:
+        TextConstExpn txtConst = new TextConstExpn();
+        txtConst.setValue(txt);
+        RESULT = txtConst;
+      :}
 
-:}
 		|	SKIP			// skip constant
-{:
-
-:}
+      {:
+        RESULT = new SkipConstExpn();
+      :}
 		;
 
 inputs		::=	variable		// list of variables being read into

@@ -1,0 +1,56 @@
+% toy programs for assignment 1 of csc488
+% contains all types of loop control structure 
+begin
+  % return the sum from 1 to x
+  integer sum_to (integer x)
+  begin
+    integer sum, i
+    sum := 0
+    i   := 1
+
+    loop
+    exit 1 when i > x
+      sum := sum + i
+      i   := i   + 1
+    pool
+
+    result sum
+  end
+
+  % iterate over 2 variables
+  proc lots_of_iteration ( )
+  begin
+    integer i, j
+    i   := 1
+    j   := 1
+
+    % loop with exit condition inside loop
+    loop
+    exit 1 when i > 5
+      if i = 5 then
+        exit
+      fi
+      i   := i   + 1
+    pool
+
+    i   := 1
+
+    % outter and inner loop going to 5 in each
+    loop
+      loop
+        put "i = ", i
+        put "j = ", j
+        if (i = 5) & (j = 5) then
+          exit 1
+        fi
+        if j = 5 then
+          j := 1
+          exit
+        fi
+        j := j + 1
+      pool
+      i := i + 1
+    pool
+	end
+  put "this is here just so i can compile"
+end

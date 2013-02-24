@@ -1,0 +1,52 @@
+% test program for valid statements
+begin
+  % since theres no semantics checking no need to declr var
+  a_var := 1
+
+
+  % test conditionals
+  if 1 then
+    % result outside function is ok without semantics
+    result 1
+  fi
+
+  if 1 then
+    return
+  else
+    return
+  fi
+
+  loop
+    put "this is a infinite loop"
+  pool
+
+  % test loop syntax
+  loop
+    exit
+  pool
+
+  loop
+    loop
+      exit 1
+    pool
+  pool
+
+  loop
+    exit when 1
+  pool
+
+  loop
+    loop
+      exit 1 when 1
+    pool
+  pool
+
+  some_procedure(a_var)
+
+  begin
+    put "scope is also a statement"
+  end
+
+  get a_var
+  put "put is a statement"
+end

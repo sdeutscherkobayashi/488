@@ -23,11 +23,11 @@ public class RoutineDecl extends Declaration {
 	public String toString() {
 	  if(type==null)
 	    {
-	      return " proc " + name;
+	      return "proc " + name;
 	    }
 	  else
 	    {
-	      return " " + type + " " + name  ;
+	      return type + " " + name  ;
 	    }
 	}
 

@@ -143,17 +143,20 @@ nonterminal	Integer bound	;
 nonterminal	ASTList<DeclarationPart> variablenames ;
 nonterminal DeclarationPart	variablename ;
 nonterminal RoutineDecl	functionHead,	procedureHead	;
-nonterminal	ASTList<ScalarDecl> parameterList ;
-nonterminal ASTList<Expn> argumentList ;
-nonterminal	arguments,	parameter,	parameters	;
+nonterminal	ASTList<ScalarDecl> parameterList, parameters  ;
+nonterminal ASTList<Expn> argumentList, arguments  ;
+nonterminal ScalarDecl parameter  ;
+nonterminal Expn argument  ;
 nonterminal ASTList<Printable> outputs ;
 nonterminal	ASTList<compiler488.ast.Readable> inputs ;
 nonterminal Printable output ;
+nonterminal compiler488.ast.Readable input ;
 nonterminal Expn 	expression ;
-nonterminal	conjunction,	negation,	compareExpn ;
-nonterminal	arithExpn,	term,    	factor		;
-nonterminal	primary,	constant ;
-nonterminal ConstExpn	variable	;
+nonterminal	Expn conjunction ;
+nonterminal	Expn negation ,	compareExpn ;
+nonterminal	Expn arithExpn,	term,    	factor		;
+nonterminal	Expn primary,	constant ;
+nonterminal ReadableExpn variable	;
 
 // Non-terminals that have a value.
 // nonterminal type  nameList ;
@@ -216,12 +219,14 @@ scope		::=	BEGIN declarations:decls statements:stmts END 	// scope with declarat
 
 statements	::=	statement:stmt						// sequence of statements
       {:
+        System.out.println("statement");
         ASTList<Stmt> stmtList = new ASTList<Stmt>();
         stmtList.addLast(stmt);
         RESULT = stmtList;
       :}
 		|	statements:stmts statement:stmt
       {:
+        System.out.println("statements statement");
         stmts.addLast(stmt);
         RESULT = stmts;
       :}
@@ -229,6 +234,7 @@ statements	::=	statement:stmt						// sequence of statements
 
 statement	::=	variable:var COLON EQUAL expression:expr				// assignment statement
       {:
+        System.out.println("variable COLON EQUAL expression");
         AssignStmt assignmentStmt = new AssignStmt();
         assignmentStmt.setLval(var);
         assignmentStmt.setRval(expr);
@@ -330,13 +336,16 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
  *            DECLARATIONS                    *
  **********************************************/
 
-declarations	::=	declaration						// sequence of declarations
+declarations	::=	declaration:decl						// sequence of declarations
       {:
-        RESULT = new ASTList<Declaration>();
-      :}
-		|	declarations declaration:decl
-      {:
+        System.out.println("decls");
         ASTList<Declaration> declList = new ASTList<Declaration>();
+        declList.addLast(decl);
+        RESULT = declList;
+      :}
+		|	declarations:declList declaration:decl
+      {:
+        System.out.println("decls decl");
         declList.addLast(decl);
         RESULT = declList;
       :}
@@ -344,30 +353,36 @@ declarations	::=	declaration						// sequence of declarations
 
 declaration	::=	type:t variablenames:variableNameList 					// declare scalar/array variables
       {:
+        System.out.println("type variablenames");
         MultiDeclarations multiDecl = new MultiDeclarations();
         multiDecl.setType(t);
         multiDecl.setElements(variableNameList);
+        RESULT = multiDecl;
       :}
 
 		|	functionHead:funcHead  scope:s					// function declaration
       {:
+        System.out.println("functionHead scope");
         funcHead.getRoutineBody().setBody(s);
         RESULT = funcHead;
       :}
 
 		|	procedureHead:procHead  scope:s					// procedure delcaration
       {:
+        System.out.println("procedureHead scope");
         procHead.getRoutineBody().setBody(s);
         RESULT = procHead;
       :}
 
-		|       FORWARD  functionHead:funcHead					// forward function declaration
+		| FORWARD  functionHead:funcHead					// forward function declaration
       {:
+        System.out.println("FORWARD functionHead");
         RESULT = funcHead;
       :}
 
 		|	FORWARD  procedureHead:procHead					// forward procedure declaration
       {:
+        System.out.println("FORWARD procedureHead");
         RESULT = procHead;
       :}
 		;
@@ -378,6 +393,7 @@ declaration	::=	type:t variablenames:variableNameList 					// declare scalar/arr
 
 variablenames	::=	variablename:varName  				// list of variables being declared
       {:
+        System.out.println("variablename");
         ASTList<DeclarationPart> varList = new ASTList<DeclarationPart>();
         varList.addLast(varName);
         RESULT = varList;
@@ -385,6 +401,7 @@ variablenames	::=	variablename:varName  				// list of variables being declared
 
 		|	variablenames:varList COMMA variablename:varName
       {:
+        System.out.println("varList, variablename");
         varList.addLast(varName);
         RESULT = varList;
       :}
@@ -392,6 +409,7 @@ variablenames	::=	variablename:varName  				// list of variables being declared
 
 variablename	::=	IDENT:varName 						// scalar variable
       {:
+        System.out.println("IDENT");
         DeclarationPart var = new DeclarationPart();
         var.setName(varName);
         RESULT = var;
@@ -399,6 +417,7 @@ variablename	::=	IDENT:varName 						// scalar variable
 
 		|	IDENT:varName L_SQUARE INTCONST:size R_SQUARE		// array variable with upper bound
       {:
+        System.out.println("IDENT [ INTCONST ]");
         ArrayDeclPart var = new ArrayDeclPart();
         var.setName(varName);
         var.setSize(size);
@@ -407,6 +426,7 @@ variablename	::=	IDENT:varName 						// scalar variable
 
 		|	IDENT:varName L_SQUARE bound:lower DOT DOT bound:upper  R_SQUARE	// array variable with upper/lower bounds
       {:
+        System.out.println("IDENT [ bound .. bound ]");
         ArrayDeclPart var = new ArrayDeclPart();
         var.setName(varName);
         var.setSize(upper - lower + 1);
@@ -416,31 +436,49 @@ variablename	::=	IDENT:varName 						// scalar variable
       :}
 		;
 
+/**********************************************
+ *            BOUND                           *
+ **********************************************/
+
 bound		::=	INTCONST:i					// positive array bound
       {:
+        System.out.println("INTCONST");
         RESULT = i;
       :}
 
 		|	MINUS INTCONST:i					// negative array bound
       {:
+        System.out.println("MINUS INTCONST");
         RESULT = -i;
       :}
 		;
 
+/**********************************************
+ *            TYPE                            *
+ **********************************************/
+
 type		::=	INTEGER			// integer type
       {:
+        System.out.println("INTEGER");
         RESULT = new IntegerType();
       :}
 
 		|	BOOLEAN			// boolean type
       {:
+        System.out.println("BOOLAN");
         RESULT = new BooleanType();
       :}
 		;
 
-functionHead	::=	type:t  IDENT L_PAREN parameterList:paramList R_PAREN		// function head
+/**********************************************
+ *            ROUTINE HEADERS                 *
+ **********************************************/
+
+functionHead	::=	type:t  IDENT:name L_PAREN parameterList:paramList R_PAREN		// function head
       {:
+        System.out.println("type IDENT (paramList)");
         RoutineDecl routineDecl = new RoutineDecl();
+        routineDecl.setName(name);
         routineDecl.setType(t);
         RoutineBody routineBody = new RoutineBody();
         routineBody.setParameters(paramList);
@@ -449,9 +487,11 @@ functionHead	::=	type:t  IDENT L_PAREN parameterList:paramList R_PAREN		// funct
       :}
 		;
 
-procedureHead	::=	PROCEDURE  IDENT L_PAREN parameterList:paramList  R_PAREN		// procedure head
+procedureHead	::=	PROCEDURE  IDENT:name L_PAREN parameterList:paramList  R_PAREN		// procedure head
       {:
+        System.out.println("PROCEDURE IDENT (paramList)");
         RoutineDecl routineDecl = new RoutineDecl();
+        routineDecl.setName(name);
         RoutineBody routineBody = new RoutineBody();
         routineBody.setParameters(paramList);
         routineDecl.setRoutineBody(routineBody);
@@ -459,8 +499,12 @@ procedureHead	::=	PROCEDURE  IDENT L_PAREN parameterList:paramList  R_PAREN		// 
       :}
 		;
 
+/**********************************************
+ *            I/O                             *
+ **********************************************/
 outputs		::=	output:printable			// list of output expressions
       {:
+        System.out.println("output");
         ASTList<Printable> outputList = new ASTList<Printable>();
         outputList.addLast(printable);
         RESULT = outputList;
@@ -468,6 +512,7 @@ outputs		::=	output:printable			// list of output expressions
 
 		|	outputs:outputList COMMA output:printable
       {:
+        System.out.println("outputs , output");
         outputList.addLast(printable);
         RESULT = outputList;
       :}
@@ -475,11 +520,13 @@ outputs		::=	output:printable			// list of output expressions
 
 output		::=	expression:expr		// integer expression
       {:
+        System.out.println("expression");
         RESULT = expr;
       :}
 
 		|	TEXTCONST:txt		// text constant
       {:
+        System.out.println("TEXTCONST");
         TextConstExpn txtConst = new TextConstExpn();
         txtConst.setValue(txt);
         RESULT = txtConst;
@@ -487,81 +534,323 @@ output		::=	expression:expr		// integer expression
 
 		|	SKIP			// skip constant
       {:
+        System.out.println("SKIP");
         RESULT = new SkipConstExpn();
       :}
 		;
 
-inputs		::=	variable		// list of variables being read into
-		|	inputs COMMA variable
+inputs		::= variable:var    // list of variables being read into
+      {:
+        ASTList<compiler488.ast.Readable> inputList = new ASTList<compiler488.ast.Readable>();
+        inputList.addLast(var);
+        RESULT = inputList;
+      :}
+
+    | inputs:inputList COMMA variable:var
+      {:
+        inputList.addLast(var);
+        RESULT = inputList;
+      :}
+    ;
+
+/**********************************************
+ *            ARGUMENTS/PARAMS                *
+ **********************************************/
+
+argumentList    ::= arguments:args            //  function/procedure arguments
+      {:
+        RESULT = args;
+      :}
+
+    |    //  EMPTY
+    ;
+
+arguments    ::=    expression:argExpr        // list of function/procedure arguments
+      {:
+        ASTList<Expn> args = new ASTList<Expn>(argExpr);
+        RESULT = args;
+      :}
+
+    |    arguments:args COMMA expression:argExpr
+      {:
+          args.addLast(argExpr);
+          RESULT = args;
+      :}
+    ;
+
+parameterList    ::=    parameters:paramList            //  function/procedure formal parameters
+      {:
+        RESULT = paramList;
+      :}
+
+    |    //  EMPTY
+    ;
+
+parameters    ::=    parameter:param            // list of function/procedure formal parameters
+      {:
+        ASTList<ScalarDecl> params = new ASTList<ScalarDecl>();
+        params.addLast(param);
+        RESULT = params;
+      :}
+
+    |    parameters:params COMMA parameter:param
+      {:
+        params.addLast(param);
+        RESULT = params;
+      :}
+    ;
+
+parameter    ::=    type:paramType IDENT:paramName        // declare one parameter
+      {:
+        ScalarDecl param = new ScalarDecl();
+        param.setName(paramName);
+        param.setType(paramType);
+        RESULT = param;
+      :}
+   ;
+
+/**********************************************
+ *            EXPRESSIONS                     *
+ **********************************************/
+
+expression	::=	conjunction:conj			// disjunctions, associate left-to-right
+      {:
+        RESULT = conj;
+      :}
+
+		|	expression:leftExpr OR conjunction:rightExpr
+      {:
+        BoolExpn boolExpn = new BoolExpn();
+        boolExpn.setLeft(leftExpr);
+        boolExpn.setRight(rightExpr);
+        boolExpn.setOpSymbol("OR");
+        RESULT = boolExpn;
+      :}
 		;
 
-argumentList	::=	arguments			//  function/procedure arguments
-		|	//  EMPTY
+conjunction	::=	negation:neg			// conjunctions, associate left-to-right
+      {:
+        RESULT = neg;
+      :}
+
+		|	conjunction:leftExpr AND negation:rightExpr
+      {:
+        BoolExpn boolExpn = new BoolExpn();
+        boolExpn.setLeft(leftExpr);
+        boolExpn.setRight(rightExpr);
+        boolExpn.setOpSymbol("AND");
+        RESULT = boolExpn;
+      :}
 		;
 
-arguments	::=	expression			// list of function/procedure arguments
-		|	arguments COMMA expression
+negation	::=	compareExpn:comp 			// negations
+      {:
+        RESULT = comp;
+      :}
+
+		|	NOT negation:neg
+      {:
+        NotExpn notExpn = new NotExpn();
+        notExpn.setOperand(neg);
+        notExpn.setOpSymbol("NOT");
+        RESULT = notExpn;
+      :}
 		;
 
-parameterList	::=	parameters			//  function/procedure formal parameters
-		|	//  EMPTY
+arithareExpn	::=	arithExpn:arith			// aritharisons, do not associate
+      {:
+        RESULT = arith;
+      :}
+
+		|	arithExpn:leftExpr EQUAL arithExpn:rightExpr
+      {:
+        EqualsExpn equalsExpn = new EqualsExpn();
+        equalsExpn.setLeft(leftExpr);
+        equalsExpn.setRight(rightExpr);
+        equalsExpn.setOpSymbol("EQUAL");
+        RESULT = equalsExpn;
+      :}
+
+		| 	arithExpn:leftExpr NOT EQUAL arithExpn:rightExpr
+      {:
+        EqualsExpn equalsExpn = new EqualsExpn();
+        equalsExpn.setLeft(leftExpr);
+        equalsExpn.setRight(rightExpr);
+        equalsExpn.setOpSymbol("NOT EQUAL");
+        RESULT = equalsExpn;
+      :}
+
+		|	arithExpn:leftExpr LESS arithExpn:rightExpr
+      {:
+        CompExpn compExpn = new CompExpn();
+        compExpn.setLeft(leftExpr);
+        compExpn.setRight(rightExpr);
+        compExpn.setOpSymbol("LESS");
+        RESULT = compExpn;
+      :}
+
+		|	arithExpn:leftExpr LESS EQUAL arithExpn:rightExpr
+      {:
+        CompExpn compExpn = new CompExpn();
+        compExpn.setLeft(leftExpr);
+        compExpn.setRight(rightExpr);
+        compExpn.setOpSymbol("LESS EQUAL");
+        RESULT = compExpn;
+      :}
+
+		|	arithExpn:leftExpr GREATER arithExpn:rightExpr
+      {:
+        CompExpn compExpn = new CompExpn();
+        compExpn.setLeft(leftExpr);
+        compExpn.setRight(rightExpr);
+        compExpn.setOpSymbol("GREATER");
+        RESULT = compExpn;
+      :}
+
+		|	arithExpn:leftExpr GREATER EQUAL arithExpn:rightExpr
+      {:
+        CompExpn compExpn = new CompExpn();
+        compExpn.setLeft(leftExpr);
+        compExpn.setRight(rightExpr);
+        compExpn.setOpSymbol("GREATER EQUAL");
+        RESULT = compExpn;
+      :}
 		;
 
-parameters	::=	parameter			// list of function/procedure formal parameters
-		|	parameters COMMA parameter
+arithExpn	::=	term:trm				// expressions, associate + , - left-to-right
+      {:
+        RESULT = trm;
+      :}
+
+		|	arithExpn:leftExpr  PLUS  term:rightExpr
+      {:
+        ArithExpn arithExpn = new ArithExpn();
+        arithExpn.setLeft(leftExpr);
+        arithExpn.setRight(rightExpr);
+        arithExpn.setOpSymbol("PLUS");
+        RESULT = arithExpn;
+      :}
+
+		|	arithExpn:leftExpr  MINUS term:rightExpr
+      {:
+        ArithExpn arithExpn = new ArithExpn();
+        arithExpn.setLeft(leftExpr);
+        arithExpn.setRight(rightExpr);
+        arithExpn.setOpSymbol("PLUS");
+        RESULT = arithExpn;
+      :}
 		;
 
-parameter	::=	type IDENT 			// declare one parameter
+term		::=	factor:fact				// terms, associate * , /   left-to-right
+      {:
+        RESULT = fact;
+      :}
+
+		|	term:leftExpr TIMES factor:rightExpr
+      {:
+        ArithExpn arithExpn = new ArithExpn();
+        arithExpn.setLeft(leftExpr);
+        arithExpn.setRight(rightExpr);
+        arithExpn.setOpSymbol("TIMES");
+        RESULT = arithExpn;
+      :}
+
+		|	term:leftExpr DIVIDE factor:rightExpr
+      {:
+        ArithExpn arithExpn = new ArithExpn();
+        arithExpn.setLeft(leftExpr);
+        arithExpn.setRight(rightExpr);
+        arithExpn.setOpSymbol("DIVIDE");
+        RESULT = arithExpn;
+      :}
 		;
 
-expression	::=	conjunction			// disjunctions, associate left-to-right
-		|	expression OR conjunction
+factor		::=	primary:prim				// unary minus
+      {:
+        RESULT = prim;
+      :}
+
+		|	MINUS factor:fact
+      {:
+        UnaryMinusExpn unaryMinusExpn = new UnaryMinusExpn();
+        unaryMinusExpn.setOperand(fact);
+        unaryMinusExpn.setOpSymbol("MINUS");
+        RESULT = unaryMinusExpn;
+      :}
 		;
 
-conjunction	::=	negation			// conjunctions, associate left-to-right
-		|	conjunction AND negation
+primary		::=	constant:constnt				// integer or boolean constant
+      {:
+        RESULT = constnt;
+      :}
+
+		|	variable:var				// scalar, array element
+      {:
+        RESULT = var;
+      :}
+
+		|	IDENT:name L_PAREN argumentList:args R_PAREN 	// function call
+      {:
+        FunctionCallExpn funcCallExpr = new FunctionCallExpn();
+        funcCallExpr.setArguments(args);
+        funcCallExpr.setIdent(name);
+        RESULT = funcCallExpr;
+      :}
+
+/*
+ * Parenthesis is implemented in ast as a unary expression where the operand is the expression
+ * and the operand is paren. TODO maybe make subclass of UnaryExpn for this?
+ */
+		| 	L_PAREN  expression:expr  R_PAREN		// parenthesized expression
+      {:
+        UnaryExpn parenExpn = new UnaryExpn();
+        parenExpn.setOperand(expr);
+        parenExpn.setOpSymbol("PAREN");
+        RESULT = parenExpn;
+      :}
 		;
 
-negation	::=	compareExpn 			// negations
-		|	NOT negation
-		;
+constant	::=	INTCONST:intConst	// integer constant
+      {:
+        System.out.println("INTCONST");
+        IntConstExpn intConstExpn = new IntConstExpn();
+        intConstExpn.setValue(intConst);
+        RESULT = intConstExpn;
+      :}
 
-compareExpn	::=	arithExpn			// comparisons, do not associate
-		|	arithExpn EQUAL arithExpn
-		| 	arithExpn NOT EQUAL arithExpn
-		|	arithExpn LESS arithExpn
-		|	arithExpn LESS EQUAL arithExpn
-		|	arithExpn GREATER arithExpn
-		|	arithExpn GREATER EQUAL arithExpn
-		;
-
-arithExpn	::=	term				// expressions, associate + , - left-to-right
-		|	arithExpn  PLUS  term
-		|	arithExpn  MINUS term
-		;
-
-term		::=	factor				// terms, associate * , /   left-to-right
-		|	term TIMES factor
-		|	term DIVIDE factor
-		;
-
-factor		::=	primary				// unary minus
-		|	MINUS factor
-		;
-
-primary		::=	constant				// integer or boolean constant
-		|	variable				// scalar, array element
-		|	IDENT L_PAREN argumentList R_PAREN 	// function call
-		| 	L_PAREN  expression  R_PAREN		// parenthesized expression
-		;
-
-constant	::=	INTCONST	// integer constant
 		|	TRUE		// constant true
+      {:
+        System.out.println("TRUE");
+        BoolConstExpn boolConstExpn = new BoolConstExpn();
+        boolConstExpn.setValue(true);
+        RESULT = boolConstExpn;
+      :}
+
 		|	FALSE		// constant false
+      {:
+        System.out.println("FALSE");
+        BoolConstExpn boolConstExpn = new BoolConstExpn();
+        boolConstExpn.setValue(false);
+        RESULT = boolConstExpn;
+      :}
 		;
 
-variable	::=	IDENT					// scalar variable
-		|	IDENT L_SQUARE expression R_SQUARE	// element of an array
+variable	::=	IDENT:name					// scalar variable
+      {:
+        System.out.println("variable ::= IDENT");
+        IdentExpn identExpr = new IdentExpn();
+        System.out.println("a");
+        identExpr.setIdent(name);
+        System.out.println("b");
+        RESULT = identExpr;
+      :}
+
+		|	IDENT:name L_SQUARE expression:expr R_SQUARE	// element of an array
+      {:
+        System.out.println("IDENT [ expression ]");
+        SubsExpn subsExpn = new SubsExpn();
+        subsExpn.setVariable(name);
+        subsExpn.setOperand(expr);
+        RESULT = subsExpn;
+      :}
 		;
-
-

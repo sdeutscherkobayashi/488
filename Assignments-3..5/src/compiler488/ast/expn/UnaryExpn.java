@@ -4,7 +4,7 @@ package compiler488.ast.expn;
 /**
  * The common features of unary expressions.
  */
-public class UnaryExpn extends Expn
+public class UnaryExpn extends ReadableUnaryExpn
     {
     Expn  operand ;	/* operand of the unary  operator. */
     String opSymbol;	/* Name of the operator. */

@@ -1,11 +1,9 @@
 package compiler488.ast.expn;
 
-import compiler488.ast.Readable;
-
 /**
  *  References to a scalar variable.
  */
-public class IdentExpn extends Expn implements Readable
+public class IdentExpn extends ReadableExpn
     {
     private String ident;  	// name of the identifier
 

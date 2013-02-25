@@ -1,6 +1,3 @@
 begin
-  begin
-    exit 1
-    exit
-  end
+  x := y
 end

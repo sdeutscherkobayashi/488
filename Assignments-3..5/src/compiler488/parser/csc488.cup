@@ -219,14 +219,14 @@ scope		::=	BEGIN declarations:decls statements:stmts END 	// scope with declarat
 
 statements	::=	statement:stmt						// sequence of statements
       {:
-        System.out.println("statements ::= statement");
+        //System.out.println("statements ::= statement");
         ASTList<Stmt> stmtList = new ASTList<Stmt>();
         stmtList.addLast(stmt);
         RESULT = stmtList;
       :}
 		|	statements:stmts statement:stmt
       {:
-        System.out.println("statements ::= statements statement");
+        //System.out.println("statements ::= statements statement");
         stmts.addLast(stmt);
         RESULT = stmts;
       :}
@@ -234,7 +234,7 @@ statements	::=	statement:stmt						// sequence of statements
 
 statement	::=	variable:var COLON EQUAL expression:expr				// assignment statement
       {:
-        System.out.println("statement ::= variable COLON EQUAL expression");
+        //System.out.println("statement ::= variable COLON EQUAL expression");
         AssignStmt assignmentStmt = new AssignStmt();
         assignmentStmt.setLval(var);
         assignmentStmt.setRval(expr);
@@ -243,7 +243,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	IF expression:expr THEN statements:stmts FI 			// if statements
       {:
-        System.out.println("statement ::= IF expression THEN statements FI");
+        //System.out.println("statement ::= IF expression THEN statements FI");
         IfStmt ifStmt = new IfStmt();
         ifStmt.setCondition(expr);
         ifStmt.setWhenTrue(stmts);
@@ -252,7 +252,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	IF expression:expr THEN statements:ifStmts ELSE statements:elseStmts FI
       {:
-        System.out.println("statement ::= IF expression THEN statements ELSE statements FI");
+        //System.out.println("statement ::= IF expression THEN statements ELSE statements FI");
         IfStmt ifStmt = new IfStmt();
         ifStmt.setCondition(expr);
         ifStmt.setWhenTrue(ifStmts);
@@ -262,7 +262,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	LOOP statements:stmts POOL					// loop statement
       {:
-        System.out.println("statement ::= LOOP statements POOL");
+        //System.out.println("statement ::= LOOP statements POOL");
         LoopStmt loopStmt = new LoopStmt();
         loopStmt.setBody(stmts);
         RESULT = loopStmt;
@@ -270,13 +270,13 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	EXIT							// exit statements
       {:
-        System.out.println("statement ::= EXIT");
+        //System.out.println("statement ::= EXIT");
         RESULT = new ExitStmt();
       :}
 
 		|	EXIT INTCONST:level
       {:
-        System.out.println("statement ::= EXIT INTCONST");
+        //System.out.println("statement ::= EXIT INTCONST");
         ExitStmt exitStmt = new ExitStmt();
         exitStmt.setLevel(level);
         RESULT = exitStmt;
@@ -284,7 +284,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	EXIT WHEN expression:expr
       {:
-        System.out.println("statement ::= EXIT WHEN expression");
+        //System.out.println("statement ::= EXIT WHEN expression");
         ExitStmt exitStmt = new ExitStmt();
         exitStmt.setExpn(expr);
         RESULT = exitStmt;
@@ -292,7 +292,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	EXIT INTCONST:level WHEN expression:expr
       {:
-        System.out.println("statement ::= EXIT INTCONST WHEN expression");
+        //System.out.println("statement ::= EXIT INTCONST WHEN expression");
         ExitStmt exitStmt = new ExitStmt();
         exitStmt.setLevel(level);
         exitStmt.setExpn(expr);
@@ -301,7 +301,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	RESULT expression:expr 					// return from function
       {:
-        System.out.println("statement ::= RESULT expression");
+        //System.out.println("statement ::= RESULT expression");
         ResultStmt resultStmt = new ResultStmt();
         resultStmt.setValue(expr);
         RESULT = resultStmt;
@@ -309,13 +309,13 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	RETURN 							// return from procedure
       {:
-        System.out.println("statement ::= RETURN");
+        //System.out.println("statement ::= RETURN");
         RESULT = new ReturnStmt();
       :}
 
 		|	IDENT:procName L_PAREN  argumentList:argList  R_PAREN 			// call procedure
       {:
-        System.out.println("statement ::= IDENT (argumentList)");
+        //System.out.println("statement ::= IDENT (argumentList)");
         ProcedureCallStmt procStmt = new ProcedureCallStmt();
         procStmt.setName(procName);
         procStmt.setArguments(argList);
@@ -324,7 +324,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	PUT outputs:outputList					// input/output statments
       {:
-        System.out.println("statement ::= PUT outputs");
+        //System.out.println("statement ::= PUT outputs");
         PutStmt putStmt = new PutStmt();
         putStmt.setOutputs(outputList);
         RESULT = putStmt;
@@ -332,7 +332,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	GET  inputs:inputList
       {:
-        System.out.println("statement ::= GET inputs");
+        //System.out.println("statement ::= GET inputs");
         GetStmt getStmt = new GetStmt();
         getStmt.setInputs(inputList);
         RESULT = getStmt;
@@ -340,7 +340,7 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 		|	scope:s							// embedded scope
       {:
-        System.out.println("statement ::= scope");
+        //System.out.println("statement ::= scope");
         RESULT = s;
       :}
 		;
@@ -351,14 +351,14 @@ statement	::=	variable:var COLON EQUAL expression:expr				// assignment statemen
 
 declarations	::=	declaration:decl						// sequence of declarations
       {:
-        System.out.println("declarations ::= declaration");
+        //System.out.println("declarations ::= declaration");
         ASTList<Declaration> declList = new ASTList<Declaration>();
         declList.addLast(decl);
         RESULT = declList;
       :}
 		|	declarations:declList declaration:decl
       {:
-        System.out.println("declarations ::= declarations declaration");
+        //System.out.println("declarations ::= declarations declaration");
         declList.addLast(decl);
         RESULT = declList;
       :}
@@ -366,7 +366,7 @@ declarations	::=	declaration:decl						// sequence of declarations
 
 declaration	::=	type:t variablenames:variableNameList 					// declare scalar/array variables
       {:
-        System.out.println("declaration ::= type variablenames");
+        //System.out.println("declaration ::= type variablenames");
         MultiDeclarations multiDecl = new MultiDeclarations();
         multiDecl.setType(t);
         multiDecl.setElements(variableNameList);
@@ -375,27 +375,27 @@ declaration	::=	type:t variablenames:variableNameList 					// declare scalar/arr
 
 		|	functionHead:funcHead  scope:s					// function declaration
       {:
-        System.out.println("declaration ::= functionHead scope");
+        //System.out.println("declaration ::= functionHead scope");
         funcHead.getRoutineBody().setBody(s);
         RESULT = funcHead;
       :}
 
 		|	procedureHead:procHead  scope:s					// procedure delcaration
       {:
-        System.out.println("declaration ::= procedureHead scope");
+        //System.out.println("declaration ::= procedureHead scope");
         procHead.getRoutineBody().setBody(s);
         RESULT = procHead;
       :}
 
 		| FORWARD  functionHead:funcHead					// forward function declaration
       {:
-        System.out.println("declaration ::= FORWARD functionHead");
+        //System.out.println("declaration ::= FORWARD functionHead");
         RESULT = funcHead;
       :}
 
 		|	FORWARD  procedureHead:procHead					// forward procedure declaration
       {:
-        System.out.println("declaration ::= FORWARD procedureHead");
+        //System.out.println("declaration ::= FORWARD procedureHead");
         RESULT = procHead;
       :}
 		;
@@ -406,7 +406,7 @@ declaration	::=	type:t variablenames:variableNameList 					// declare scalar/arr
 
 variablenames	::=	variablename:varName  				// list of variables being declared
       {:
-        System.out.println("variablenames ::= variablename");
+        //System.out.println("variablenames ::= variablename");
         ASTList<DeclarationPart> varList = new ASTList<DeclarationPart>();
         varList.addLast(varName);
         RESULT = varList;
@@ -414,7 +414,7 @@ variablenames	::=	variablename:varName  				// list of variables being declared
 
 		|	variablenames:varList COMMA variablename:varName
       {:
-        System.out.println("variablenames := varList, variablename");
+        //System.out.println("variablenames := varList, variablename");
         varList.addLast(varName);
         RESULT = varList;
       :}
@@ -422,7 +422,7 @@ variablenames	::=	variablename:varName  				// list of variables being declared
 
 variablename	::=	IDENT:varName 						// scalar variable
       {:
-        System.out.println("variablename ::= IDENT");
+        //System.out.println("variablename ::= IDENT");
         DeclarationPart var = new DeclarationPart();
         var.setName(varName);
         RESULT = var;
@@ -430,7 +430,7 @@ variablename	::=	IDENT:varName 						// scalar variable
 
 		|	IDENT:varName L_SQUARE INTCONST:size R_SQUARE		// array variable with upper bound
       {:
-        System.out.println("variablename ::= IDENT [ INTCONST ]");
+        //System.out.println("variablename ::= IDENT [ INTCONST ]");
         ArrayDeclPart var = new ArrayDeclPart();
         var.setName(varName);
         var.setSize(size);
@@ -439,7 +439,7 @@ variablename	::=	IDENT:varName 						// scalar variable
 
 		|	IDENT:varName L_SQUARE bound:lower DOT DOT bound:upper  R_SQUARE	// array variable with upper/lower bounds
       {:
-        System.out.println("variablename ::= IDENT [ bound .. bound ]");
+        //System.out.println("variablename ::= IDENT [ bound .. bound ]");
         ArrayDeclPart var = new ArrayDeclPart();
         var.setName(varName);
         var.setSize(upper - lower + 1);
@@ -455,13 +455,13 @@ variablename	::=	IDENT:varName 						// scalar variable
 
 bound		::=	INTCONST:i					// positive array bound
       {:
-        System.out.println("bound ::= INTCONST");
+        //System.out.println("bound ::= INTCONST");
         RESULT = i;
       :}
 
 		|	MINUS INTCONST:i					// negative array bound
       {:
-        System.out.println("bound ::= MINUS INTCONST");
+        //System.out.println("bound ::= MINUS INTCONST");
         RESULT = -i;
       :}
 		;
@@ -472,13 +472,13 @@ bound		::=	INTCONST:i					// positive array bound
 
 type		::=	INTEGER			// integer type
       {:
-        System.out.println("type ::= INTEGER");
+        //System.out.println("type ::= INTEGER");
         RESULT = new IntegerType();
       :}
 
 		|	BOOLEAN			// boolean type
       {:
-        System.out.println("type ::= BOOLAN");
+        //System.out.println("type ::= BOOLAN");
         RESULT = new BooleanType();
       :}
 		;
@@ -489,7 +489,7 @@ type		::=	INTEGER			// integer type
 
 functionHead	::=	type:t  IDENT:name L_PAREN parameterList:paramList R_PAREN		// function head
       {:
-        System.out.println("functionHead ::= type IDENT (paramList)");
+        //System.out.println("functionHead ::= type IDENT (paramList)");
         RoutineDecl routineDecl = new RoutineDecl();
         routineDecl.setName(name);
         routineDecl.setType(t);
@@ -502,7 +502,7 @@ functionHead	::=	type:t  IDENT:name L_PAREN parameterList:paramList R_PAREN		// 
 
 procedureHead	::=	PROCEDURE  IDENT:name L_PAREN parameterList:paramList  R_PAREN		// procedure head
       {:
-        System.out.println(" procedureHead ::= PROCEDURE IDENT (paramList)");
+        //System.out.println(" procedureHead ::= PROCEDURE IDENT (paramList)");
         RoutineDecl routineDecl = new RoutineDecl();
         routineDecl.setName(name);
         RoutineBody routineBody = new RoutineBody();
@@ -517,7 +517,7 @@ procedureHead	::=	PROCEDURE  IDENT:name L_PAREN parameterList:paramList  R_PAREN
  **********************************************/
 outputs		::=	output:printable			// list of output expressions
       {:
-        System.out.println("outputs ::= output");
+        //System.out.println("outputs ::= output");
         ASTList<Printable> outputList = new ASTList<Printable>();
         outputList.addLast(printable);
         RESULT = outputList;
@@ -525,7 +525,7 @@ outputs		::=	output:printable			// list of output expressions
 
 		|	outputs:outputList COMMA output:printable
       {:
-        System.out.println("outputs ::= outputs , output");
+        //System.out.println("outputs ::= outputs , output");
         outputList.addLast(printable);
         RESULT = outputList;
       :}
@@ -533,13 +533,13 @@ outputs		::=	output:printable			// list of output expressions
 
 output		::=	expression:expr		// integer expression
       {:
-        System.out.println("output ::= expression");
+        //System.out.println("output ::= expression");
         RESULT = expr;
       :}
 
 		|	TEXTCONST:txt		// text constant
       {:
-        System.out.println("output ::= TEXTCONST");
+        //System.out.println("output ::= TEXTCONST");
         TextConstExpn txtConst = new TextConstExpn();
         txtConst.setValue(txt);
         RESULT = txtConst;
@@ -547,14 +547,14 @@ output		::=	expression:expr		// integer expression
 
 		|	SKIP			// skip constant
       {:
-        System.out.println("output ::= SKIP");
+        //System.out.println("output ::= SKIP");
         RESULT = new SkipConstExpn();
       :}
 		;
 
 inputs		::= variable:var    // list of variables being read into
       {:
-        System.out.println("inputs ::= expression");
+        //System.out.println("inputs ::= expression");
         ASTList<compiler488.ast.Readable> inputList = new ASTList<compiler488.ast.Readable>();
         inputList.addLast(var);
         RESULT = inputList;
@@ -562,7 +562,7 @@ inputs		::= variable:var    // list of variables being read into
 
     | inputs:inputList COMMA variable:var
       {:
-        System.out.println("inputs ::= expression");
+        //System.out.println("inputs ::= expression");
         inputList.addLast(var);
         RESULT = inputList;
       :}
@@ -574,7 +574,7 @@ inputs		::= variable:var    // list of variables being read into
 
 argumentList    ::= arguments:args            //  function/procedure arguments
       {:
-        System.out.println("argumentList ::= expression");
+        //System.out.println("argumentList ::= expression");
         RESULT = args;
       :}
 
@@ -583,14 +583,14 @@ argumentList    ::= arguments:args            //  function/procedure arguments
 
 arguments    ::=    expression:argExpr        // list of function/procedure arguments
       {:
-        System.out.println("arguments ::= expression");
+        //System.out.println("arguments ::= expression");
         ASTList<Expn> args = new ASTList<Expn>(argExpr);
         RESULT = args;
       :}
 
     |    arguments:args COMMA expression:argExpr
       {:
-        System.out.println("arguments ::= expression");
+        //System.out.println("arguments ::= expression");
           args.addLast(argExpr);
           RESULT = args;
       :}
@@ -598,7 +598,7 @@ arguments    ::=    expression:argExpr        // list of function/procedure argu
 
 parameterList    ::=    parameters:paramList            //  function/procedure formal parameters
       {:
-        System.out.println("parameterList ::= expression");
+        //System.out.println("parameterList ::= expression");
         RESULT = paramList;
       :}
 
@@ -607,7 +607,7 @@ parameterList    ::=    parameters:paramList            //  function/procedure f
 
 parameters    ::=    parameter:param            // list of function/procedure formal parameters
       {:
-        System.out.println("parameters ::= expression");
+        //System.out.println("parameters ::= expression");
         ASTList<ScalarDecl> params = new ASTList<ScalarDecl>();
         params.addLast(param);
         RESULT = params;
@@ -615,7 +615,7 @@ parameters    ::=    parameter:param            // list of function/procedure fo
 
     |    parameters:params COMMA parameter:param
       {:
-        System.out.println("parameters ::= expression");
+        //System.out.println("parameters ::= expression");
         params.addLast(param);
         RESULT = params;
       :}
@@ -623,7 +623,7 @@ parameters    ::=    parameter:param            // list of function/procedure fo
 
 parameter    ::=    type:paramType IDENT:paramName        // declare one parameter
       {:
-        System.out.println("parameter ::= expression");
+        //System.out.println("parameter ::= expression");
         ScalarDecl param = new ScalarDecl();
         param.setName(paramName);
         param.setType(paramType);
@@ -637,13 +637,13 @@ parameter    ::=    type:paramType IDENT:paramName        // declare one paramet
 
 expression	::=	conjunction:conj			// disjunctions, associate left-to-right
       {:
-        System.out.println("expression ::= conjunction");
+        //System.out.println("expression ::= conjunction");
         RESULT = conj;
       :}
 
 		|	expression:leftExpr OR conjunction:rightExpr
       {:
-        System.out.println("expression ::= expression OR conjunction");
+        //System.out.println("expression ::= expression OR conjunction");
         BoolExpn boolExpn = new BoolExpn();
         boolExpn.setLeft(leftExpr);
         boolExpn.setRight(rightExpr);
@@ -654,13 +654,13 @@ expression	::=	conjunction:conj			// disjunctions, associate left-to-right
 
 conjunction	::=	negation:neg			// conjunctions, associate left-to-right
       {:
-        System.out.println("conjunction ::= negation");
+        //System.out.println("conjunction ::= negation");
         RESULT = neg;
       :}
 
 		|	conjunction:leftExpr AND negation:rightExpr
       {:
-        System.out.println("conjunction ::= conjunction AND negation");
+        //System.out.println("conjunction ::= conjunction AND negation");
         BoolExpn boolExpn = new BoolExpn();
         boolExpn.setLeft(leftExpr);
         boolExpn.setRight(rightExpr);
@@ -671,13 +671,13 @@ conjunction	::=	negation:neg			// conjunctions, associate left-to-right
 
 negation	::=	compareExpn:comp 			// negations
       {:
-        System.out.println("negation ::= compareExpn");
+        //System.out.println("negation ::= compareExpn");
         RESULT = comp;
       :}
 
 		|	NOT negation:neg
       {:
-        System.out.println("negation ::= NOT negation");
+        //System.out.println("negation ::= NOT negation");
         NotExpn notExpn = new NotExpn();
         notExpn.setOperand(neg);
         notExpn.setOpSymbol("NOT");
@@ -687,13 +687,13 @@ negation	::=	compareExpn:comp 			// negations
 
 compareExpn	::=	arithExpn:arith			// aritharisons, do not associate
       {:
-        System.out.println("compareExpn ::= arithExpn");
+        //System.out.println("compareExpn ::= arithExpn");
         RESULT = arith;
       :}
 
 		|	arithExpn:leftExpr EQUAL arithExpn:rightExpr
       {:
-        System.out.println("compareExpn ::= arithExpn EQUAL arithExpn");
+        //System.out.println("compareExpn ::= arithExpn EQUAL arithExpn");
         EqualsExpn equalsExpn = new EqualsExpn();
         equalsExpn.setLeft(leftExpr);
         equalsExpn.setRight(rightExpr);
@@ -703,7 +703,7 @@ compareExpn	::=	arithExpn:arith			// aritharisons, do not associate
 
 		| 	arithExpn:leftExpr NOT EQUAL arithExpn:rightExpr
       {:
-        System.out.println("compareExpn ::= arithExpn NOT EQUAL arithExpn");
+        //System.out.println("compareExpn ::= arithExpn NOT EQUAL arithExpn");
         EqualsExpn equalsExpn = new EqualsExpn();
         equalsExpn.setLeft(leftExpr);
         equalsExpn.setRight(rightExpr);
@@ -713,7 +713,7 @@ compareExpn	::=	arithExpn:arith			// aritharisons, do not associate
 
 		|	arithExpn:leftExpr LESS arithExpn:rightExpr
       {:
-        System.out.println("compareExpn ::= arithExpn LESS arithExpn");
+        //System.out.println("compareExpn ::= arithExpn LESS arithExpn");
         CompareExpn compExpn = new CompareExpn();
         compExpn.setLeft(leftExpr);
         compExpn.setRight(rightExpr);
@@ -723,7 +723,7 @@ compareExpn	::=	arithExpn:arith			// aritharisons, do not associate
 
 		|	arithExpn:leftExpr LESS EQUAL arithExpn:rightExpr
       {:
-        System.out.println("compareExpn ::= arithExpn LESS EQUAL arithExpn");
+        //System.out.println("compareExpn ::= arithExpn LESS EQUAL arithExpn");
         CompareExpn compExpn = new CompareExpn();
         compExpn.setLeft(leftExpr);
         compExpn.setRight(rightExpr);
@@ -733,7 +733,7 @@ compareExpn	::=	arithExpn:arith			// aritharisons, do not associate
 
 		|	arithExpn:leftExpr GREATER arithExpn:rightExpr
       {:
-        System.out.println("compareExpn ::= arithExpn GREATER arithExpn");
+        //System.out.println("compareExpn ::= arithExpn GREATER arithExpn");
         CompareExpn compExpn = new CompareExpn();
         compExpn.setLeft(leftExpr);
         compExpn.setRight(rightExpr);
@@ -743,7 +743,7 @@ compareExpn	::=	arithExpn:arith			// aritharisons, do not associate
 
 		|	arithExpn:leftExpr GREATER EQUAL arithExpn:rightExpr
       {:
-        System.out.println("compareExpn ::= arithExpn GREATER EQUAL arithExpn");
+        //System.out.println("compareExpn ::= arithExpn GREATER EQUAL arithExpn");
         CompareExpn compExpn = new CompareExpn();
         compExpn.setLeft(leftExpr);
         compExpn.setRight(rightExpr);
@@ -754,13 +754,13 @@ compareExpn	::=	arithExpn:arith			// aritharisons, do not associate
 
 arithExpn	::=	term:trm				// expressions, associate + , - left-to-right
       {:
-        System.out.println("arithExpn ::= term");
+        //System.out.println("arithExpn ::= term");
         RESULT = trm;
       :}
 
 		|	arithExpn:leftExpr  PLUS  term:rightExpr
       {:
-        System.out.println("arithExpn ::= arithExpn PLUS term");
+        //System.out.println("arithExpn ::= arithExpn PLUS term");
         ArithExpn arithExpn = new ArithExpn();
         arithExpn.setLeft(leftExpr);
         arithExpn.setRight(rightExpr);
@@ -770,7 +770,7 @@ arithExpn	::=	term:trm				// expressions, associate + , - left-to-right
 
 		|	arithExpn:leftExpr  MINUS term:rightExpr
       {:
-        System.out.println("arithExpn ::= arithExpn MINUS term");
+        //System.out.println("arithExpn ::= arithExpn MINUS term");
         ArithExpn arithExpn = new ArithExpn();
         arithExpn.setLeft(leftExpr);
         arithExpn.setRight(rightExpr);
@@ -781,13 +781,13 @@ arithExpn	::=	term:trm				// expressions, associate + , - left-to-right
 
 term		::=	factor:fact				// terms, associate * , /   left-to-right
       {:
-        System.out.println("term ::= factor");
+        //System.out.println("term ::= factor");
         RESULT = fact;
       :}
 
 		|	term:leftExpr TIMES factor:rightExpr
       {:
-        System.out.println("term ::= term TIMES factor");
+        //System.out.println("term ::= term TIMES factor");
         ArithExpn arithExpn = new ArithExpn();
         arithExpn.setLeft(leftExpr);
         arithExpn.setRight(rightExpr);
@@ -797,7 +797,7 @@ term		::=	factor:fact				// terms, associate * , /   left-to-right
 
 		|	term:leftExpr DIVIDE factor:rightExpr
       {:
-        System.out.println("term ::= term DIVIDE factor");
+        //System.out.println("term ::= term DIVIDE factor");
         ArithExpn arithExpn = new ArithExpn();
         arithExpn.setLeft(leftExpr);
         arithExpn.setRight(rightExpr);
@@ -808,13 +808,13 @@ term		::=	factor:fact				// terms, associate * , /   left-to-right
 
 factor		::=	primary:prim				// unary minus
       {:
-        System.out.println("factor ::= primary");
+        //System.out.println("factor ::= primary");
         RESULT = prim;
       :}
 
 		|	MINUS factor:fact
       {:
-        System.out.println("factor ::= MINUS factor");
+        //System.out.println("factor ::= MINUS factor");
         UnaryMinusExpn unaryMinusExpn = new UnaryMinusExpn();
         unaryMinusExpn.setOperand(fact);
         unaryMinusExpn.setOpSymbol("MINUS");
@@ -824,19 +824,19 @@ factor		::=	primary:prim				// unary minus
 
 primary		::=	constant:constnt				// integer or boolean constant
       {:
-        System.out.println("primary ::= constant");
+        //System.out.println("primary ::= constant");
         RESULT = constnt;
       :}
 
 		|	variable:var				// scalar, array element
       {:
-        System.out.println("primary ::= variable");
+        //System.out.println("primary ::= variable");
         RESULT = var;
       :}
 
 		|	IDENT:name L_PAREN argumentList:args R_PAREN 	// function call
       {:
-        System.out.println("primary ::= IDENT (argumentList)");
+        //System.out.println("primary ::= IDENT (argumentList)");
         FunctionCallExpn funcCallExpr = new FunctionCallExpn();
         funcCallExpr.setArguments(args);
         funcCallExpr.setIdent(name);
@@ -849,7 +849,7 @@ primary		::=	constant:constnt				// integer or boolean constant
  */
 		| 	L_PAREN  expression:expr  R_PAREN		// parenthesized expression
       {:
-        System.out.println("primary ::= (expression)");
+        //System.out.println("primary ::= (expression)");
         UnaryExpn parenExpn = new UnaryExpn();
         parenExpn.setOperand(expr);
         parenExpn.setOpSymbol("PAREN");
@@ -859,7 +859,7 @@ primary		::=	constant:constnt				// integer or boolean constant
 
 constant	::=	INTCONST:intConst	// integer constant
       {:
-        System.out.println("constant ::= INTCONST");
+        //System.out.println("constant ::= INTCONST");
         IntConstExpn intConstExpn = new IntConstExpn();
         intConstExpn.setValue(intConst);
         RESULT = intConstExpn;
@@ -867,7 +867,7 @@ constant	::=	INTCONST:intConst	// integer constant
 
 		|	TRUE		// constant true
       {:
-        System.out.println("constant ::= TRUE");
+        //System.out.println("constant ::= TRUE");
         BoolConstExpn boolConstExpn = new BoolConstExpn();
         boolConstExpn.setValue(true);
         RESULT = boolConstExpn;
@@ -875,7 +875,7 @@ constant	::=	INTCONST:intConst	// integer constant
 
 		|	FALSE		// constant false
       {:
-        System.out.println("constant ::= FALSE");
+        //System.out.println("constant ::= FALSE");
         BoolConstExpn boolConstExpn = new BoolConstExpn();
         boolConstExpn.setValue(false);
         RESULT = boolConstExpn;
@@ -884,7 +884,7 @@ constant	::=	INTCONST:intConst	// integer constant
 
 variable	::=	IDENT:name					// scalar variable
       {:
-        System.out.println("variable ::= IDENT");
+        //System.out.println("variable ::= IDENT");
         IdentExpn identExpr = new IdentExpn();
         identExpr.setIdent(name);
         RESULT = identExpr;
@@ -892,7 +892,7 @@ variable	::=	IDENT:name					// scalar variable
 
 		|	IDENT:name L_SQUARE expression:expr R_SQUARE	// element of an array
       {:
-        System.out.println("variable ::= IDENT [ expression ]");
+        //System.out.println("variable ::= IDENT [ expression ]");
         SubsExpn subsExpn = new SubsExpn();
         subsExpn.setVariable(name);
         subsExpn.setOperand(expr);

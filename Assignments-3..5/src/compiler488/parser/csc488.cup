@@ -774,7 +774,7 @@ arithExpn	::=	term:trm				// expressions, associate + , - left-to-right
         ArithExpn arithExpn = new ArithExpn();
         arithExpn.setLeft(leftExpr);
         arithExpn.setRight(rightExpr);
-        arithExpn.setOpSymbol("PLUS");
+        arithExpn.setOpSymbol("MINUS");
         RESULT = arithExpn;
       :}
 		;

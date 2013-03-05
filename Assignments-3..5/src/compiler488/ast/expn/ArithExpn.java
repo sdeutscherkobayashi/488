@@ -5,5 +5,11 @@ package compiler488.ast.expn;
  * expressions.
  */
 public class ArithExpn extends BinaryExpn {
+  public boolean isBool() {
+    return false;
+  }
 
+  public boolean isInteger() {
+    return true;
+  }
 }

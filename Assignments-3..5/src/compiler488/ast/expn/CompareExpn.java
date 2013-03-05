@@ -5,5 +5,11 @@ package compiler488.ast.expn;
  * be integer expressions. e.g. < , > etc. comparisons
  */
 public class CompareExpn extends BinaryExpn {
+  public boolean isBool() {
+    return true;
+  }
 
+  public boolean isInteger() {
+    return false;
+  }
 }

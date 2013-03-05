@@ -53,7 +53,7 @@ public class ASTList<E> extends AST {
 	 * elements are typically printed on seperate lines, otherwise they may
 	 * not implement <b>printOn</b>. If the list is empty, print
 	 * <b>&gt;&gt;empty&lt;&lt;</b> follwed by a new-line.
-	 * 
+	 *
 	 * @param out
 	 *            Where to print the list.
 	 * @param depth
@@ -87,4 +87,8 @@ public class ASTList<E> extends AST {
 			return result.toString();
 		}
 	}
+
+  public E get(int i) {
+    return ll.get(i);
+  }
 }

@@ -18,4 +18,12 @@ public class IntConstExpn extends ConstExpn
 	public void setValue(Integer value) {
 		this.value = value;
 	}
+
+  public boolean isBool() {
+    return false;
+  }
+
+  public boolean isInteger() {
+    return true;
+  }
 }

@@ -20,4 +20,12 @@ public class BoolConstExpn extends ConstExpn
 	public void setValue(boolean value) {
 		this.value = value;
 	}
+
+  public boolean isBool() {
+    return true;
+  }
+
+  public boolean isInteger() {
+    return false;
+  }
 }

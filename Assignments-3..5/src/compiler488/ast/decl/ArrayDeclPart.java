@@ -44,4 +44,9 @@ public class ArrayDeclPart extends DeclarationPart {
 	public void setSize(Integer size) {
 		this.size = size;
 	}
+
+  public boolean doSemantics() {
+    //TODO check declare din scope
+    return true;
+  }
 }

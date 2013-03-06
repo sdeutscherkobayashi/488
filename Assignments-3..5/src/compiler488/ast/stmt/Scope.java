@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.decl.Declaration;
+import compiler488.semantics.Semantics;
 
 /**
  * Represents the declarations and instructions of a scope construct.
@@ -57,4 +58,15 @@ public class Scope extends Stmt {
 		this.statements = statements;
 	}
 
+  public void doSemantics() {
+    Semantics.declareScope();
+
+    // semantic analysis for this scopes declarations
+    for (int i = 0; i < declarations.size(); i++) statements.get(i).doSemantics();
+
+    // semantic analysis for this scopes statements
+    for (int i = 0; i < statements.size(); i++) statements.get(i).doSemantics();
+
+    Semantics.removeScope();
+  }
 }

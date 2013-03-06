@@ -9,5 +9,8 @@ package compiler488.ast;
 public class AST {
 
 	public final static String version = " CSC488S  Winter 2012/2013  2013-01:28  11:10 " ;
- 
+
+  public void doSemantics() {
+
+  }
 }

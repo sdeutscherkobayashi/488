@@ -64,7 +64,6 @@ public class Semantics {
   public static void removeScope() {
     // when we remove the current scope then the scope above is the new current
     int index = scopes.indexOf(current);
-    System.out.println(index);
 
     if (index > 0) {
       SemanticsScope previous = scopes.get(index - 1);

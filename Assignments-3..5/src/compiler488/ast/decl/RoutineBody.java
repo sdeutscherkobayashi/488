@@ -49,4 +49,16 @@ public class RoutineBody extends Indentable {
 	public void setParameters(ASTList<ScalarDecl> parameters) {
 		this.parameters = parameters;
 	}
+
+	public void doSemantics() {
+		if (parameters != null) {
+			for (int i = 0; i < parameters.size(); i++) {
+				parameters.get(i).doSemantics();
+			}
+		}
+
+		if (body != null) {
+			body.doSemantics();
+		}
+	}
 }

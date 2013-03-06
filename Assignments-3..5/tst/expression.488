@@ -1,5 +1,12 @@
 % test compile for valid expressions
 begin
+  integer some_var, some_param
+
+  integer some_func()
+  begin
+    put "hi"
+	end
+
   put 1
   put -1
   put 1 + 1

@@ -148,10 +148,10 @@ nonterminal ASTList<Expn> argumentList, arguments  ;
 nonterminal ScalarDecl parameter  ;
 nonterminal Expn argument  ;
 nonterminal ASTList<Printable> outputs ;
-nonterminal	ASTList<compiler488.ast.Readable> inputs ;
+nonterminal	ASTList<ReadableExpn> inputs ;
 nonterminal Printable output ;
-nonterminal compiler488.ast.Readable input ;
-nonterminal Expn 	expression ;
+nonterminal ReadableExpn input ;
+nonterminal Expn expression ;
 nonterminal	Expn conjunction ;
 nonterminal	Expn negation ,	compareExpn ;
 nonterminal	Expn arithExpn,	term,    	factor		;
@@ -557,7 +557,7 @@ output		::=	expression:expr		// integer expression
 inputs		::= variable:var    // list of variables being read into
       {:
         //System.out.println("inputs ::= expression");
-        ASTList<compiler488.ast.Readable> inputList = new ASTList<compiler488.ast.Readable>();
+        ASTList<ReadableExpn> inputList = new ASTList<ReadableExpn>();
         inputList.addLast(var);
         RESULT = inputList;
       :}

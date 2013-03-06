@@ -1,6 +1,7 @@
 % test program for valid statements
 begin
-  % since theres no semantics checking no need to declr var
+  integer a_var
+
   a_var := 1
 
 

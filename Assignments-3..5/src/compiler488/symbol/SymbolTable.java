@@ -85,11 +85,27 @@ public class SymbolTable {
 
      // add the new entry if it does not already exist
      if (hasEntry(name)) {
-       entries.add(new SymbolTableEntry(name, kind, value, type));
-       return true;
+       return false;
      }
 
-     return false;
+     entries.add(new SymbolTableEntry(name, kind, value, type));
+     return true;
+   }
+   /*
+    * Return the SymbolTableEntry given by name if there is one, null if there is not.
+    */
+   public SymbolTableEntry getEntry(String name) {
+     System.out.println("Get entry " + name + " in symbol table");
+     System.out.println(entries.size());
+     for (SymbolTableEntry entry : entries) {
+       System.out.println(entry.getName());
+       if (entry.getName().equals(name)) {
+         return entry;
+       }
+     }
+
+     return null;
+
    }
 }
 

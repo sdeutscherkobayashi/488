@@ -58,9 +58,11 @@ public class MultiDeclarations extends Declaration {
 
 			/* Try to add the declaration to the symbol table */
 			if (part instanceof ArrayDeclPart) {
+				System.out.println("adding array decl");
 				Semantics.addTableEntry(part.getName(), Kind.ARRAY, part, type);
 
 			} else if (part instanceof DeclarationPart) {
+				System.out.println("adding scalar decl");
 				Semantics.addTableEntry(part.getName(), Kind.SCALAR, part, type);
 			}
 		}

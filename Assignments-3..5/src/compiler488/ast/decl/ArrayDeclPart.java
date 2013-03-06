@@ -1,5 +1,7 @@
 package compiler488.ast.decl;
 
+import compiler488.semantics.ArrayDeclarationException;
+
 /**
  * Holds the declaration part of an array.
  */
@@ -45,8 +47,9 @@ public class ArrayDeclPart extends DeclarationPart {
 		this.size = size;
 	}
 
-  public boolean doSemantics() {
-    //TODO check declare din scope
-    return true;
-  }
+	public void doSemantics() {
+		if (lb >= ub) {
+			throw new ArrayDeclarationException("Invalid bounds, lower bound must be less then upper bound");
+		}
+	}
 }

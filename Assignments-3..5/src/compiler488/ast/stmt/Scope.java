@@ -62,7 +62,7 @@ public class Scope extends Stmt {
     Semantics.declareScope();
 
     // semantic analysis for this scopes declarations
-    for (int i = 0; i < declarations.size(); i++) statements.get(i).doSemantics();
+    for (int i = 0; i < declarations.size(); i++) declarations.get(i).doSemantics();
 
     // semantic analysis for this scopes statements
     for (int i = 0; i < statements.size(); i++) statements.get(i).doSemantics();

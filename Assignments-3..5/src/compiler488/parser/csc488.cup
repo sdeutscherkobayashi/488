@@ -434,6 +434,8 @@ variablename	::=	IDENT:varName 						// scalar variable
         ArrayDeclPart var = new ArrayDeclPart();
         var.setName(varName);
         var.setSize(size);
+        var.setLowerBoundary(0);
+        var.setUpperBoundary(size - 1);
         RESULT = var;
       :}
 

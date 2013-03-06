@@ -41,6 +41,7 @@ public class Semantics {
 
   public static void doSemanticAnalysis(Program program) {
     tables = new ArrayList<SymbolTable>();
+    scopes = new ArrayList<SemanticsScope>();
     program.doSemantics();
   }
 
@@ -62,29 +63,36 @@ public class Semantics {
 
   public static void removeScope() {
     // when we remove the current scope then the scope above is the new current
-    SemanticsScope previous = scopes.get(scopes.indexOf(current) - 1);
+    int index = scopes.indexOf(current);
+    System.out.println(index);
 
-    tables.remove(current);
-    current = previous;
+    if (index > 0) {
+      SemanticsScope previous = scopes.get(index - 1);
+      tables.remove(current);
+      current = previous;
+    } else {
+      tables.remove(current);
+      current = null;
+    }
   }
 
   public static void addTableEntry(String name, Kind kind, AST value, Type type) {
-    if (canAdd(name)) {
-      current.getTable().addEntry(name, kind, value, type);
-    } else {
+    if (nameExists(name)) {
       throw new ScopeException("Cannot declare " + name + " in scope");
+    } else {
+      current.getTable().addEntry(name, kind, value, type);
     }
   }
 
-  private static boolean canAdd(String name) {
-    // loop over all scopes to check for any table entries
+  private static boolean nameExists(String name) {
+    // loop over all scopes outwards to check for any table entries
     // with the given name (note all scopes prior to current)
     // are above current and have the same namespace
-    for (SemanticsScope scope : scopes) {
-      if (scope.getTable().hasEntry(name)) return false;
+    for (int i = scopes.size() - 1; i >= 0; i--) {
+      if (scopes.get(i).getTable().hasEntry(name)) return true;
     }
 
-    return true;
+    return false;
   }
 
 	/**  semanticsInitialize - called once by the parser at the      */

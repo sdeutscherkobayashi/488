@@ -1,6 +1,7 @@
 package compiler488.ast.stmt;
 
 import compiler488.ast.expn.Expn;
+import compiler488.ast.expn.FunctionCallExpn;
 import compiler488.ast.expn.IdentExpn;
 import compiler488.ast.expn.SubsExpn;
 import compiler488.ast.expn.ReadableExpn;
@@ -58,16 +59,38 @@ public class AssignStmt extends Stmt {
 		SymbolTableEntry entry = Semantics.findTableEntry(name);
     Type t = entry.getType();
 
-		/* Ensure the left and right side are the same type */
-		if ((t instanceof BooleanType) && !rval.isBool()) {
-			throw new TypeException("Invalid assignment statement for variable " + lval +
-					"of type " + t);
+		/* Check left and right side for function calls*/
+		if (rval instanceof FunctionCallExpn) {
+			FunctionCallExpn func = (FunctionCallExpn) rval;
+
+			/* Should exist from rval.doSemantics */
+			SymbolTableEntry funcEntry = Semantics.findTableEntry(func.getIdent());
+
+      if ((t instanceof BooleanType) && !(funcEntry.getType() instanceof BooleanType)) {
+				throw new TypeException("Invalid assignment statement for variable " + lval +
+						" of type " + t);
+			}
+			
+      if ((t instanceof IntegerType) && !(funcEntry.getType() instanceof IntegerType)) {
+				throw new TypeException("Invalid assignment statement for variable " + lval +
+						" of type " + t);
+			}
+
+		/* Use these checks for expns that support isBool/Int */
+		} else {
+			/* Ensure the left and right side are the same type */
+			if ((t instanceof BooleanType) && !rval.isBool()) {
+				throw new TypeException("Invalid assignment statement for variable " + lval +
+						" of type " + t);
+			}
+
+			if ((t instanceof IntegerType) && !rval.isInt()) {
+				throw new TypeException("Invalid assignment statement for variable " + lval +
+						" of type " + t);
+			}
 		}
 
-		if ((t instanceof IntegerType) && !rval.isInt()) {
-			throw new TypeException("Invalid assignment statement for variable " + lval +
-					"of type " + t);
-		}
+
 		
 	}
 }

@@ -1,6 +1,7 @@
 package compiler488.ast.expn;
 
 import compiler488.ast.ASTList;
+import compiler488.ast.*;
 
 /**
  * Represents a function call with or without arguments.
@@ -35,5 +36,4 @@ public class FunctionCallExpn extends Expn {
 	public void setIdent(String ident) {
 		this.ident = ident;
 	}
-
 }

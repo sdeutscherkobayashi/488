@@ -19,5 +19,8 @@ public class ScalarDecl extends Declaration {
 	}
 	
 	public void doSemantics() {
+
+		/* Simply add this decl to the current scope */
+		Semantics.addTableEntry(name, Kind.SCALAR, this, type);
 	}
 }

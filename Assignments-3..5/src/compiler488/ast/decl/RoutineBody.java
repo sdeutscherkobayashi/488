@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import compiler488.ast.ASTList;
 import compiler488.ast.Indentable;
 import compiler488.ast.stmt.Scope;
+import compiler488.semantics.Semantics;
 
 /**
  * Represents the parameters and instructions associated with a
@@ -51,14 +52,31 @@ public class RoutineBody extends Indentable {
 	}
 
 	public void doSemantics() {
-		if (parameters != null) {
+		/* If this routine has parameters then declare each of them */
+
+		/* NOTE: We need params to be available only within the scope 
+		 * of the routine body. To do this we will declare them in the
+		 * current scope above the routine body and then remove them
+		 * following the semantic analysis of the body
+		 */
+		boolean hasParams = parameters != null;
+
+		if (hasParams) {
 			for (int i = 0; i < parameters.size(); i++) {
 				parameters.get(i).doSemantics();
 			}
 		}
 
+		/* Check routine body */
 		if (body != null) {
 			body.doSemantics();
+		}
+
+		/* Remove the routine params from the current scope */
+		if (hasParams) {
+			for (int i = 0; i < parameters.size(); i++) {
+				Semantics.removeTableEntry(parameters.get(i).name);
+			}
 		}
 	}
 }

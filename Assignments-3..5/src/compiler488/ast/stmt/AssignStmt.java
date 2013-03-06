@@ -66,12 +66,12 @@ public class AssignStmt extends Stmt {
 			/* Should exist from rval.doSemantics */
 			SymbolTableEntry funcEntry = Semantics.findTableEntry(func.getIdent());
 
-      if ((t instanceof BooleanType) && !(funcEntry.getType() instanceof BooleanType)) {
+      if (lval.isBool() && !(funcEntry.getType() instanceof BooleanType)) {
 				throw new TypeException("Invalid assignment statement for variable " + lval +
 						" of type " + t);
 			}
 			
-      if ((t instanceof IntegerType) && !(funcEntry.getType() instanceof IntegerType)) {
+      if (lval.isInt() && !(funcEntry.getType() instanceof IntegerType)) {
 				throw new TypeException("Invalid assignment statement for variable " + lval +
 						" of type " + t);
 			}
@@ -79,12 +79,12 @@ public class AssignStmt extends Stmt {
 		/* Use these checks for expns that support isBool/Int */
 		} else {
 			/* Ensure the left and right side are the same type */
-			if ((t instanceof BooleanType) && !rval.isBool()) {
+			if (lval.isBool() && !rval.isBool()) {
 				throw new TypeException("Invalid assignment statement for variable " + lval +
 						" of type " + t);
 			}
 
-			if ((t instanceof IntegerType) && !rval.isInt()) {
+			if (rval.isInt() && !rval.isInt()) {
 				throw new TypeException("Invalid assignment statement for variable " + lval +
 						" of type " + t);
 			}

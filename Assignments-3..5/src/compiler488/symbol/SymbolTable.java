@@ -91,14 +91,30 @@ public class SymbolTable {
      entries.add(new SymbolTableEntry(name, kind, value, type));
      return true;
    }
+
+   /**
+    * Remove the entry associated with name and return true
+    * if it was successfully removed
+    */
+   public boolean removeEntry(String name) {
+
+     for (SymbolTableEntry entry : entries) {
+       if (entry.getName().equals(name)) {
+         entries.remove(entry);
+         return true;
+       }
+     }
+
+     return false;
+   }
+
    /*
     * Return the SymbolTableEntry given by name if there is one, null if there is not.
     */
    public SymbolTableEntry getEntry(String name) {
-     System.out.println("Get entry " + name + " in symbol table");
-     System.out.println(entries.size());
+    // System.out.println("Get entry " + name + " in symbol table");
+    // System.out.println(entries.size());
      for (SymbolTableEntry entry : entries) {
-       System.out.println(entry.getName());
        if (entry.getName().equals(name)) {
          return entry;
        }

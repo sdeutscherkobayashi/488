@@ -60,7 +60,7 @@ public class Semantics {
     SemanticsScope scope = new SemanticsScope(lexicDepth);
     scopes.add(scope);
 
-    current = scope; 
+    current = scope;
     System.out.println("Added Scope " + scopes.size());
   }
 
@@ -70,7 +70,6 @@ public class Semantics {
     int index = scopes.indexOf(current);
 
     if (index > 0) {
-      System.out.println("removing " + index);
       SemanticsScope previous = scopes.get(index - 1);
       scopes.remove(current);
       current = previous;
@@ -86,6 +85,19 @@ public class Semantics {
       throw new ScopeException("Cannot declare " + name + " in scope");
     } else {
       current.getTable().addEntry(name, kind, value, type);
+    }
+  }
+
+  /**
+   * Removes the entry associated with name in the current scope.
+   * Throws ScopeException if name is not declared in the current
+   * scope.
+   */
+  public static void removeTableEntry(String name) {
+
+    /* removeEntry returns true if the entry was successfully removed */
+    if (!current.getTable().removeEntry(name)) {
+      throw new ScopeException("No declaration for variable " + name + " in scope");
     }
   }
 

@@ -6,12 +6,12 @@ begin
 
 
   % test conditionals
-  if 1 then
+  if true then
     % result outside function is ok without semantics
     result 1
   fi
 
-  if 1 then
+  if a_var = 1 then
     return
   else
     return

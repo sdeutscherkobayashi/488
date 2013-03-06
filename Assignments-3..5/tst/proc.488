@@ -1,8 +1,8 @@
 begin
 	proc addOne(integer n, boolean boo)
 	begin
-		if boo then
-			n := n +1
+		if true then
+			n := n + 1
 		else
 			n := n
 		fi

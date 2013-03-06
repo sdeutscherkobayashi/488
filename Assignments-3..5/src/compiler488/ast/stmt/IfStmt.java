@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
 import compiler488.ast.ASTList;
+import compiler488.semantics.Semantics;
+import compiler488.semantics.TypeException;
 
 /**
  * Represents an if-then or an if-then-else construct.
@@ -71,5 +73,21 @@ public class IfStmt extends Stmt {
 
 	public void setWhenTrue(ASTList<Stmt> whenTrue) {
 		this.whenTrue = whenTrue;
+	}
+	
+	public void doSemantics() {
+		condition.doSemantics();
+
+		if (!condition.isBool()) {
+			throw new TypeException("Invalid Type, non-boolean conditional given");
+		}
+
+		/* whenTrue should always exist or would not be valid syntax */
+		for (int i = 0; i < whenTrue.size(); i++) whenTrue.get(i).doSemantics();
+
+		/* Check else condition semantics if it exists */
+	  if (whenFalse != null) {
+			for (int i = 0; i < whenFalse.size(); i++) whenFalse.get(i).doSemantics();
+		}
 	}
 }

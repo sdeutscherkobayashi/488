@@ -1,6 +1,7 @@
 package compiler488.ast.expn;
 
 import compiler488.ast.Readable;
+import compiler488.ast.type.*;
 
 import compiler488.semantics.Semantics;
 import compiler488.semantics.ScopeException;
@@ -39,5 +40,23 @@ public class SubsExpn extends UnaryExpn implements Readable {
 		if (entry == null) {
 			throw new ScopeException("variable with name " + variable + " not declared in scope");
 		}
+	}
+
+	@Override
+	public boolean isBool() {
+		/* Find the entry - if we get here it should exist */
+		SymbolTableEntry entry = Semantics.findTableEntry(variable);
+    Type t = entry.getType();
+
+	  return t instanceof BooleanType;
+	}
+
+	@Override
+	public boolean isInt() {
+		/* Find the entry - if we get here it should exist */
+		SymbolTableEntry entry = Semantics.findTableEntry(variable);
+    Type t = entry.getType();
+
+	  return t instanceof IntegerType;
 	}
 }

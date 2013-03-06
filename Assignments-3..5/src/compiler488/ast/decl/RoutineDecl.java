@@ -2,7 +2,10 @@ package compiler488.ast.decl;
 
 import java.io.PrintStream;
 
+import compiler488.ast.AST;
 import compiler488.ast.Indentable;
+import compiler488.semantics.Semantics;
+import compiler488.symbol.Kind;
 
 /**
  * Represents the declaration of a function or procedure.
@@ -51,5 +54,15 @@ public class RoutineDecl extends Declaration {
 
 	public void setRoutineBody(RoutineBody routineBody) {
 		this.routineBody = routineBody;
+	}
+
+	public void doSemantics() {
+		routineBody.doSemantics();
+
+		if (type == null) {
+			Semantics.addTableEntry(name, Kind.PROC, this, type);
+		} else {
+			Semantics.addTableEntry(name, Kind.FUNC, this, type);
+		}
 	}
 }

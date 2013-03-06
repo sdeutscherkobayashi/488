@@ -46,6 +46,7 @@ public class Semantics {
   }
 
   public static void declareScope() {
+    System.out.println("Declare New Scope " + scopes.size());
     int lexicDepth;
 
     /* Increment the current depth */
@@ -56,24 +57,28 @@ public class Semantics {
     }
 
     /* Add the new scope */
-    scopes.add(new SemanticsScope(lexicDepth));
+    SemanticsScope scope = new SemanticsScope(lexicDepth);
+    scopes.add(scope);
 
-    current = scopes.get(scopes.size() - 1);
+    current = scope; 
+    System.out.println("Added Scope " + scopes.size());
   }
 
   public static void removeScope() {
+    System.out.println("Removing Current Scope " + scopes.size());
     // when we remove the current scope then the scope above is the new current
     int index = scopes.indexOf(current);
-    System.out.println(index);
 
     if (index > 0) {
+      System.out.println("removing " + index);
       SemanticsScope previous = scopes.get(index - 1);
-      tables.remove(current);
+      scopes.remove(current);
       current = previous;
     } else {
-      tables.remove(current);
+      scopes.remove(current);
       current = null;
     }
+    System.out.println("Removed Scope " + scopes.size());
   }
 
   public static void addTableEntry(String name, Kind kind, AST value, Type type) {
@@ -84,7 +89,19 @@ public class Semantics {
     }
   }
 
-  private static boolean nameExists(String name) {
+  public static SymbolTableEntry findTableEntry(String name) {
+    SymbolTableEntry entry;
+
+    for (int i = scopes.size() - 1; i >= 0; i--) {
+      entry = scopes.get(i).getTable().getEntry(name);
+
+      if (entry != null) return entry;
+    }
+
+    return null;
+  }
+
+  public static boolean nameExists(String name) {
     // loop over all scopes outwards to check for any table entries
     // with the given name (note all scopes prior to current)
     // are above current and have the same namespace

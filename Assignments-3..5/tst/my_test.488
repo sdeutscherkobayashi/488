@@ -1,3 +1,4 @@
 begin
+  integer x
   x := (1 + 2) / 3
 end

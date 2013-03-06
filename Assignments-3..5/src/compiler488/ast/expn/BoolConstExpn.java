@@ -21,11 +21,13 @@ public class BoolConstExpn extends ConstExpn
 		this.value = value;
 	}
 
+  @Override
   public boolean isBool() {
     return true;
   }
 
-  public boolean isInteger() {
+  @Override
+  public boolean isInt() {
     return false;
   }
 }

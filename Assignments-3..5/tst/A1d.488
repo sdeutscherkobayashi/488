@@ -6,13 +6,13 @@ begin
   integer sum_to ( integer x )
   begin
     integer sum, i
-    sum : = 0
-    i   : = 1
+    sum := 0
+    i   := 1
 
     loop
     exit 1 when i > x
-      sum : = sum + i
-      i   : = i   + 1
+      sum := sum + i
+      i   := i   + 1
     pool
 
     result sum

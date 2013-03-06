@@ -2,6 +2,10 @@ package compiler488.ast.expn;
 
 import compiler488.ast.Readable;
 
+import compiler488.semantics.Semantics;
+import compiler488.semantics.ScopeException;
+import compiler488.symbol.*;
+
 /**
  * References to an array element variable
  * 
@@ -26,4 +30,14 @@ public class SubsExpn extends UnaryExpn implements Readable {
 		this.variable = variable;
 	}
 
+	/**
+	 * Ensure variable has been declared in an accessible scope
+	 */
+	public void doSemantics() {
+		SymbolTableEntry entry = Semantics.findTableEntry(variable);
+
+		if (entry == null) {
+			throw new ScopeException("variable with name " + variable + " not declared in scope");
+		}
+	}
 }

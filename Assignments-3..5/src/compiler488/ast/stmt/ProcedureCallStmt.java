@@ -6,7 +6,7 @@ import compiler488.ast.decl.ScalarDecl;
 import compiler488.ast.decl.RoutineDecl;
 import compiler488.ast.expn.Expn;
 import compiler488.semantics.*;
-import compiler488.symbol.SymbolTableEntry;
+import compiler488.symbol.*;
 /**
  * Represents calling a procedure.
  */
@@ -53,7 +53,11 @@ public class ProcedureCallStmt extends Stmt {
     SymbolTableEntry entry = Semantics.findTableEntry(name);
 
 		if (entry == null) {
-			throw new ScopeException("Invalid function/procedure call, " + name + " not declared in scope");
+			throw new ScopeException("Invalid procedure call, " + name + " not declared in scope");
+		}
+
+		if (entry.getKind() != Kind.PROC) {
+			throw new TypeException("Invalid procedure call, " + name + " does not declare a procedure");
 		}
 
 		/* Check that the correct params are given */
@@ -61,7 +65,7 @@ public class ProcedureCallStmt extends Stmt {
 		ASTList<ScalarDecl> params = decl.getRoutineBody().getParameters();
 
     if (params == null && arguments != null) {
-			throw new ScopeException("Invalid function/procedure call, " + name + " expects 0 arguments but " +
+			throw new ScopeException("Invalid procedure call, " + name + " expects 0 arguments but " +
 					arguments.size() + " given");
 		}
 
@@ -76,7 +80,7 @@ public class ProcedureCallStmt extends Stmt {
 		if (params != null && arguments != null) {
 
 			if (params.size() != arguments.size()) {
-				throw new ScopeException("Invalid function/procedure call, " + name + " expects " +
+				throw new ScopeException("Invalid procedure call, " + name + " expects " +
 						params.size() + " arguments but given " + arguments.size());
 			}
 

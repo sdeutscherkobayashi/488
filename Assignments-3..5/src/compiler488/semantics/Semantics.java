@@ -111,6 +111,13 @@ public class Semantics {
     current.removeLoop();
   }
 
+  /*
+   * Return the loop depth of the current scope
+   */
+  public static int getCurrentLoopDepth() {
+    return current.getLoopDepth();
+  }
+
 /**********************************************
  *            Manage Symbol Tables            *
  **********************************************/

@@ -1,0 +1,11 @@
+begin
+	integer a
+	integer b[9]
+
+	a := c
+	b[0] := c
+	d := a
+	e[0] := a
+	callaProc(a)
+	a := callaFunc(c)
+end

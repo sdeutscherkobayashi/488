@@ -1,0 +1,7 @@
+begin
+  integer A[10]
+  integer B[10..1]
+
+  put "hello"
+end
+

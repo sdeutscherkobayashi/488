@@ -12,6 +12,6 @@ begin
 	integer i
 	boolean j
 
-	i := addOne(1)
-	j := negate(false)
+	j := addOne(1)
+	i := negate(false)
 end

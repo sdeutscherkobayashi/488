@@ -9,6 +9,6 @@ begin
 	end
 
 	addOne(1, true)
-	addOne(2, false)
+	addOne(false, 1)
 end
 

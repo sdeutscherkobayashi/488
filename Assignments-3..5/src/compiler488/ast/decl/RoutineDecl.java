@@ -57,12 +57,14 @@ public class RoutineDecl extends Declaration {
 	}
 
 	public void doSemantics() {
-		routineBody.doSemantics();
 
+		/* Add routine decl first since it is needed by the body */
 		if (type == null) {
 			Semantics.addTableEntry(name, Kind.PROC, this, type);
 		} else {
 			Semantics.addTableEntry(name, Kind.FUNC, this, type);
 		}
+
+		routineBody.doSemantics();
 	}
 }

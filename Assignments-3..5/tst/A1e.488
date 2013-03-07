@@ -15,7 +15,7 @@ begin
   integer factorial99()
   begin
     % nested function computes x factorial
-    integer fact(integer x) 
+    integer fact(integer x)
     begin
       if x = 1 then
         result 1

@@ -1,0 +1,6 @@
+begin
+	integer a
+
+	a := true
+end
+

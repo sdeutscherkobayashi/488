@@ -1,0 +1,10 @@
+begin
+	integer a
+	boolean b, c
+
+	a := 1
+	b := true
+
+	a := -b
+end
+

@@ -1,0 +1,11 @@
+begin
+	integer a
+	boolean b, c
+
+	a := 1
+	b := true
+	c := true
+
+	a := b - c
+end
+

@@ -1,0 +1,8 @@
+begin
+	integer x
+	boolean a, b
+
+	get a
+	get x, a, b
+end
+

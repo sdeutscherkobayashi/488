@@ -1,0 +1,17 @@
+begin
+	integer addOne(integer n)
+	begin
+		n := n + 1
+	end
+
+	boolean negate(boolean b)
+	begin
+		b := !b
+	end
+
+	integer i
+	boolean j
+
+	i := addOne(1)
+	j := negate(false)
+end

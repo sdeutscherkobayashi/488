@@ -1,0 +1,5 @@
+begin
+	boolean a
+
+	put a
+end

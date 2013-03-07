@@ -376,6 +376,7 @@ declaration	::=	type:t variablenames:variableNameList 					// declare scalar/arr
 		|	functionHead:funcHead  scope:s					// function declaration
       {:
         //System.out.println("declaration ::= functionHead scope");
+        s.setRoutineName(funcHead.getName());
         funcHead.getRoutineBody().setBody(s);
         RESULT = funcHead;
       :}
@@ -383,6 +384,7 @@ declaration	::=	type:t variablenames:variableNameList 					// declare scalar/arr
 		|	procedureHead:procHead  scope:s					// procedure delcaration
       {:
         //System.out.println("declaration ::= procedureHead scope");
+        s.setRoutineName(procHead.getName());
         procHead.getRoutineBody().setBody(s);
         RESULT = procHead;
       :}

@@ -52,8 +52,8 @@ public class Semantics {
   /*
    * Open a new scope with an empty SymbolTable
    */
-  public static void declareScope() {
-    System.out.println("Declare New Scope " + scopes.size());
+  public static void declareScope(String routineName) {
+    //System.out.println("Declare New Scope " + scopes.size());
     int lexicDepth;
 
     /* Increment the current depth */
@@ -64,18 +64,18 @@ public class Semantics {
     }
 
     /* Add the new scope */
-    SemanticsScope scope = new SemanticsScope(lexicDepth);
+    SemanticsScope scope = new SemanticsScope(lexicDepth, routineName);
     scopes.add(scope);
 
     current = scope;
-    System.out.println("Added Scope " + scopes.size());
+    //System.out.println("Added Scope " + scopes.size());
   }
 
   /*
    * Remove the current scope
    */
   public static void removeScope() {
-    System.out.println("Removing Current Scope " + scopes.size());
+    //System.out.println("Removing Current Scope " + scopes.size());
     // when we remove the current scope then the scope above is the new current
     int index = scopes.indexOf(current);
 
@@ -87,7 +87,14 @@ public class Semantics {
       scopes.remove(current);
       current = null;
     }
-    System.out.println("Removed Scope " + scopes.size());
+    //System.out.println("Removed Scope " + scopes.size());
+  }
+
+  /*
+   * Return the current scope
+   */
+  public static SemanticsScope getCurrentScope() {
+    return current;
   }
 
   /**
@@ -153,7 +160,7 @@ public class Semantics {
 
   /**
    * Return the SymbolTableEntry given by name in the current scope,
-   * or any containing scope, null if it does not exist.jk
+   * or any containing scope, null if it does not exist.
    */
   public static SymbolTableEntry findTableEntry(String name) {
     SymbolTableEntry entry;

@@ -7,14 +7,13 @@ begin
 
   % test conditionals
   if true then
-    % result outside function is ok without semantics
-    result 1
+    put 1
   fi
 
   if a_var = 1 then
-    return
+    put 1
   else
-    return
+    put 1
   fi
 
   loop

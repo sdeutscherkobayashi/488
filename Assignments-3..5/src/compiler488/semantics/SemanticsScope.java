@@ -13,12 +13,17 @@ public class SemanticsScope {
   /* The number of loops in this scope */
   private int loopDepth;
 
+  /* This scope's symbol table */
   private SymbolTable table;
 
-  public SemanticsScope(int lexicDepth) {
-    this.lexicDepth = lexicDepth;
-    this.table      = new SymbolTable();
-    this.loopDepth  = 0;
+  /* Gives the name of the routine of this scope if it has one */
+  private String routineName = null;
+
+  public SemanticsScope(int lexicDepth, String routineName) {
+    this.lexicDepth  = lexicDepth;
+    this.table       = new SymbolTable();
+    this.loopDepth   = 0;
+    this.routineName = routineName;
   }
 
   public int getLexicDepth() {
@@ -31,6 +36,10 @@ public class SemanticsScope {
 
   public int getLoopDepth() {
     return loopDepth;
+  }
+
+  public String getRoutineName() {
+    return routineName;
   }
 
   /*

@@ -112,9 +112,10 @@ public class SymbolTable {
     * Return the SymbolTableEntry given by name if there is one, null if there is not.
     */
    public SymbolTableEntry getEntry(String name) {
-    // System.out.println("Get entry " + name + " in symbol table");
-    // System.out.println(entries.size());
+     //System.out.println("Get entry " + name + " in symbol table");
+     //System.out.println(entries.size());
      for (SymbolTableEntry entry : entries) {
+      // System.out.println("current entry name = " + entry.getName());
        if (entry.getName().equals(name)) {
          return entry;
        }

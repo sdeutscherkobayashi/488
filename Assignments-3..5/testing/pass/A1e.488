@@ -15,7 +15,7 @@ begin
   integer factorial99()
   begin
     % nested function computes x factorial
-    integer fact(integer x) 
+    integer fact(integer x)
     begin
       if x = 1 then
         result 1
@@ -51,6 +51,9 @@ begin
      fi
   end
 
+  forward proc odd(integer x)
+  forward proc even(integer x)
+
   % output whether 99 is even
   proc even_99()
   begin
@@ -59,7 +62,7 @@ begin
       if x = 0 then
         put "x is even"
       else
-        put odd(abs(x - 1))
+        odd(abs(x - 1))
       fi
     end
 
@@ -68,7 +71,7 @@ begin
       if x = 0 then
         put "x is not even"
       else
-        put even(abs (x) - 1)
+        even(abs (x) - 1)
       fi
     end
 

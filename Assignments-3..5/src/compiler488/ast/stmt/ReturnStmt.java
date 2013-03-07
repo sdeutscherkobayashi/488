@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.expn.Expn;
+import compiler488.semantics.*;
+import compiler488.symbol.*;
 
 /**
  * The command to return from a procedure.
@@ -24,4 +26,18 @@ public class ReturnStmt extends Stmt {
 		out.println("return ");
 	}
 
+	public void doSemantics() {
+		SemanticsScope current = Semantics.getCurrentScope();
+		String routineName    = current.getRoutineName();
+
+		if (routineName == null) {
+			throw new InvalidReturnException("Invalid return statement, return outside of proc definition");
+		}
+
+		SymbolTableEntry entry = Semantics.findTableEntry(routineName);
+
+		if (entry.getKind() != Kind.PROC) {
+			throw new InvalidReturnException("Invalid return statement, return inside a function def");
+		}
+	}
 }

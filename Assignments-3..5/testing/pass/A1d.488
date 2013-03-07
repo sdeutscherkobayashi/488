@@ -3,7 +3,7 @@
 begin
 
   % return the sum from 1 to x
-  integer sum_to ( integer x )
+  integer sum_to (integer x)
   begin
     integer sum, i
     sum := 0
@@ -47,7 +47,7 @@ begin
   % execute all the sum_to function and print its output
   proc main ( )
   begin
-    put "sum from 1 to 10 is " sum_to ( 10 )
+    put "sum from 1 to 10 is ", sum_to ( 10 )
   end
 
   main ()

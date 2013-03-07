@@ -1,6 +1,0 @@
-% test program for argument
-begin
-  some_proc()
-  another_proc(x)
-  multi_arg_proc(x, y, z)
-end

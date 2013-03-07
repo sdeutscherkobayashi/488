@@ -1,7 +1,7 @@
 #! /bin/sh
 #  Location of directory containing  dist/compiler488.jar
 WHERE=.
-FILES=tst/*
+FILES=testing/pass/*
 
 echo "**** Running parser on files in tst folder ****"
 

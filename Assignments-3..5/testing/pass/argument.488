@@ -1,0 +1,24 @@
+% test program for argument
+begin
+  proc multi_arg_proc(boolean x, boolean y, integer z)
+  begin
+    put "a"
+	end
+
+  proc some_proc()
+  begin
+		put "b"
+  end
+
+  proc another_proc(boolean x)
+  begin
+		put "b"
+  end
+
+  boolean x, y
+  integer z
+
+  some_proc()
+  another_proc(x)
+  multi_arg_proc(x, y, z)
+end

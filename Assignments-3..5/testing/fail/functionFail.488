@@ -15,6 +15,6 @@ begin
         result n
 
 
-	i := addOne(1)
-	j := negate(false)
+	j := addOne(1)
+	i := negate(false)
 end

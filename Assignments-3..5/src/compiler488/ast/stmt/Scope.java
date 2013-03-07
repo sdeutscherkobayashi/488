@@ -15,6 +15,11 @@ public class Scope extends Stmt {
 
 	private ASTList<Stmt> statements; // The statements to execute.
 
+  /*
+   * Gives the name of the routine def containing this scope (if there is one)
+   */
+  private String routineName = null;
+
 	public Scope() {
 		declarations = new ASTList<Declaration>();
 		statements = new ASTList<Stmt>();
@@ -22,7 +27,7 @@ public class Scope extends Stmt {
 
 	/**
 	 * Print a description of the <b>scope</b> construct.
-	 * 
+	 *
 	 * @param out
 	 *            Where to print the description.
 	 * @param depth
@@ -50,6 +55,14 @@ public class Scope extends Stmt {
 		return statements;
 	}
 
+  public String getRoutineName() {
+    return routineName;
+  }
+
+  public void setRoutineName(String name) {
+    routineName = name;
+  }
+
 	public void setDeclarations(ASTList<Declaration> declarations) {
 		this.declarations = declarations;
 	}
@@ -59,7 +72,7 @@ public class Scope extends Stmt {
 	}
 
   public void doSemantics() {
-    Semantics.declareScope();
+    Semantics.declareScope(routineName);
 
     // semantic analysis for this scopes declarations
     for (int i = 0; i < declarations.size(); i++) declarations.get(i).doSemantics();

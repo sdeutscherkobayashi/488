@@ -175,6 +175,19 @@ public class Semantics {
   }
 
   /**
+   * Set the table entry given by name in the current scope, or any
+   * containing scope to value.
+   */
+  public static void editTableEntry(String name, AST value) {
+    SymbolTableEntry entry;
+
+    for (int i = scopes.size() - 1; i >= 0; i--) {
+      entry = scopes.get(i).getTable().getEntry(name);
+
+      if (entry != null) entry.setValue(value);
+    }
+  }
+  /**
    * Return true if a SymbolTableEntry with the given name exists in
    * the current scope or any containing scopes.
    */

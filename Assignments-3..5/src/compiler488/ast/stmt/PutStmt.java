@@ -2,6 +2,7 @@ package compiler488.ast.stmt;
 
 import compiler488.ast.ASTList;
 import compiler488.ast.Printable;
+import compiler488.ast.expn.Expn;
 
 /**
  * The command to write data on the output device.
@@ -25,5 +26,14 @@ public class PutStmt extends Stmt {
 
 	public void setOutputs(ASTList<Printable> outputs) {
 		this.outputs = outputs;
+	}
+
+	public void doSemantics() {
+		/* Only need to do semantic if output is an expr */
+		for (int i = 0; i < outputs.size(); i++) {
+			if (outputs.get(i) instanceof Expn) {
+				((Expn) outputs.get(i)).doSemantics();
+			}
+		}
 	}
 }

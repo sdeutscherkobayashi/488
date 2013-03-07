@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import compiler488.ast.Indentable;
 import compiler488.ast.ASTList;
+import compiler488.semantics.Semantics;
 
 /**
  * Represents a infinite loop. 
@@ -33,5 +34,19 @@ public class LoopStmt extends Stmt {
 		Indentable.printIndentOnLn(out, depth, "loop " );
 		body.printOnSeperateLines(out, depth + 1);
 		Indentable.printIndentOnLn(out, depth, " pool ");
+	}
+
+	/*
+	 * Update the current scope's loop depth and check semantics of
+	 * the loop body
+	 */
+	public void doSemantics() {
+		Semantics.incrementLoopDepth();
+
+		for (int i = 0; i < body.size(); i++) {
+			body.get(i).doSemantics();
+		}
+
+		Semantics.decrementLoopDepth();
 	}
 }

@@ -12,7 +12,7 @@ begin
 
     % set array values
     loop
-    exit 1 when i > 5 
+    exit 1 when i > 5
       int_list [ i ] : = i
       i   : = i   + 1
     pool
@@ -21,8 +21,8 @@ begin
 
     % compute sum using array
     loop
-    exit 1 when i > 5 
-      sum : = sum + int_list [ i ]
+    exit 1 when i > 5
+      sum : = sum + int_list [i]
       i   : = i   + 1
     pool
 
@@ -30,25 +30,25 @@ begin
   end
 
   integer i
-  boolean pos_bool_list [ 1 . .  5 ]
-  boolean ned_bool_list [ - 5 . . - 1 ]
-  i   : = 1
+  boolean pos_bool_list [1 .. 5]
+  boolean neg_bool_list [-5 .. -1]
+  i := 1
 
   % set array values
   loop
-  exit 1 when i > 5 
-    pos_bool_list [ i ] : = 1
-    neg_bool_list [ -  i ] : = 1
-    i   : = i   + 1
+  exit 1 when i > 5
+    pos_bool_list [i] := true
+    neg_bool_list [-i] := true
+    i := i + 1
   pool
 
-  i   : = 1
+  i := 1
 
   % negate the value stored at each array index in both arrays
   loop
-  exit 1 when i > 5 
-    pos_bool_list [ i ] : = - pos_bool_list [ i ]
-    neg_bool_list [ - i ] : = - neg_bool_list [ - i ]
-    i   : = i   + 1
+  exit 1 when i > 5
+    pos_bool_list [ i ] : = !pos_bool_list[i]
+    neg_bool_list [-i] : = !neg_bool_list[-i]
+    i := i + 1
   pool
 end

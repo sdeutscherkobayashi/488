@@ -5,5 +5,13 @@ package compiler488.ast.expn;
  * expressions.
  */
 public class BoolExpn extends BinaryExpn {
+	@Override
+  public boolean isBool() {
+    return true;
+  }
 
+	@Override
+  public boolean isInt() {
+    return false;
+	}
 }

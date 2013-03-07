@@ -45,6 +45,13 @@ public class Semantics {
     program.doSemantics();
   }
 
+/**********************************************
+ *            Manage Scopes                   *
+ **********************************************/
+
+  /*
+   * Open a new scope with an empty SymbolTable
+   */
   public static void declareScope() {
     System.out.println("Declare New Scope " + scopes.size());
     int lexicDepth;
@@ -64,6 +71,9 @@ public class Semantics {
     System.out.println("Added Scope " + scopes.size());
   }
 
+  /*
+   * Remove the current scope
+   */
   public static void removeScope() {
     System.out.println("Removing Current Scope " + scopes.size());
     // when we remove the current scope then the scope above is the new current
@@ -80,6 +90,38 @@ public class Semantics {
     System.out.println("Removed Scope " + scopes.size());
   }
 
+  /**
+   * Add 1 to the current scope's loop depth
+   */
+  public static void incrementLoopDepth() {
+    current.addLoop();
+  }
+
+  /**
+   * Decrement 1 from the current scope's loop depth
+   *
+   * Throws LoopExitException if the number of
+   * loops in the current is less than 1
+   */
+  public static void decrementLoopDepth() {
+    if (current.getLoopDepth() < 1) {
+      throw new LoopExitException("Invalid loop decrement");
+    }
+
+    current.removeLoop();
+  }
+
+/**********************************************
+ *            Manage Symbol Tables            *
+ **********************************************/
+
+  /**
+   * Add the table entry specified by name, kind, value, type
+   * to the current scope.
+   *
+   * Throws ScopeException if there exists a declaration with
+   * that name in the current scope or any containing scope.
+   */
   public static void addTableEntry(String name, Kind kind, AST value, Type type) {
     if (nameExists(name)) {
       throw new ScopeException("Cannot declare " + name + " in scope");
@@ -90,6 +132,7 @@ public class Semantics {
 
   /**
    * Removes the entry associated with name in the current scope.
+   *
    * Throws ScopeException if name is not declared in the current
    * scope.
    */
@@ -101,6 +144,10 @@ public class Semantics {
     }
   }
 
+  /**
+   * Return the SymbolTableEntry given by name in the current scope,
+   * or any containing scope, null if it does not exist.jk
+   */
   public static SymbolTableEntry findTableEntry(String name) {
     SymbolTableEntry entry;
 
@@ -113,6 +160,10 @@ public class Semantics {
     return null;
   }
 
+  /**
+   * Return true if a SymbolTableEntry with the given name exists in
+   * the current scope or any containing scopes.
+   */
   public static boolean nameExists(String name) {
     // loop over all scopes outwards to check for any table entries
     // with the given name (note all scopes prior to current)

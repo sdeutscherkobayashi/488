@@ -79,7 +79,8 @@ public class IfStmt extends Stmt {
 		condition.doSemantics();
 
 		if (!condition.isBool()) {
-			throw new TypeException("Invalid Type, non-boolean conditional given");
+			throw new TypeException("Invalid Type for condition " + 
+					condition + ", non-boolean conditional given");
 		}
 
 		/* whenTrue should always exist or would not be valid syntax */

@@ -1,26 +1,33 @@
 begin
-	integer a, d
-	boolean b, c
+	integer a, b
 
 	a := 1
-	d := 1
-	b := true
-	c := true
 
-	a := -b
-	a := b + c
-	a := b - c
-	a := b * c
-	a := b / c
-	a := true
-	a := false
-	a := !b
-	a := b & c
-	a := b | c
-	a := b = c
-	a := b != c
-	a := b < c
-	a := b <= c
-	a := b > c
-	a := b >= c
+	if a then
+		b := 1
+	else
+		b := 2
+	fi
+
+	loop
+		b := 1
+	pool
+	exit
+
+	loop
+		loop
+			exit 10
+		pool
+	pool
+
+	loop
+		exit when a
+	pool
+
+	loop
+		loop
+			exit 10 when a
+		pool
+	pool
+
 end

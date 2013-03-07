@@ -1,16 +1,19 @@
 begin
-	integer addOne(integer n)
-	begin
-		n := n + 1
-	end
+
+	integer i
+        boolean j
 
 	boolean negate(boolean b)
 	begin
-		b := !b
+		result 1
 	end
 
-	integer i
-	boolean j
+	integer addOne(integer n)
+        begin
+                n := n + 1
+        end
+        result n
+
 
 	i := addOne(1)
 	j := negate(false)

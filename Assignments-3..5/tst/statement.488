@@ -2,6 +2,11 @@
 begin
   integer a_var
 
+  proc some_procedure(integer hi)
+  begin
+    put "yep"
+  end
+
   a_var := 1
 
 

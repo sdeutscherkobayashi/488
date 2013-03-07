@@ -1,0 +1,14 @@
+begin
+	proc addOne(integer n, boolean boo)
+	begin
+		if true then
+			n := n + 1
+		else
+			n := n
+		fi
+	end
+	return
+
+	addOne(1, true)
+end
+

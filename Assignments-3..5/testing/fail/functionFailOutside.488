@@ -1,0 +1,14 @@
+begin
+
+        boolean j
+
+        integer addOne(integer n)
+        begin
+                n := n + 1
+        end
+        result n
+
+
+        j := addOne(1)
+end
+

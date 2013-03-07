@@ -1,0 +1,26 @@
+begin
+	integer a, d
+	boolean b, c
+
+	a := 1
+	d := 1
+	b := true
+	c := true
+
+	a := -b
+	a := b + c
+	a := b - c
+	a := b * c
+	a := b / c
+	a := true
+	a := false
+	a := !b
+	a := b & c
+	a := b | c
+	a := b = c
+	a := b != c
+	a := b < c
+	a := b <= c
+	a := b > c
+	a := b >= c
+end
